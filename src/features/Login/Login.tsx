@@ -2,9 +2,9 @@ import React from "react";
 import { useFormik } from "formik";
 import { useSelector } from "react-redux";
 import { loginTC } from "./auth-reducer";
-import { AppRootStateType } from "../../app/store";
+import { AppRootStateType } from "app/store";
 import { Navigate } from "react-router-dom";
-import { useAppDispatch } from "../../hooks/useAppDispatch";
+import { useAppDispatch } from "hooks/useAppDispatch";
 import { Button, Checkbox, FormControl, FormControlLabel, FormGroup, FormLabel, Grid, TextField } from "@mui/material";
 
 export const Login = () => {
@@ -56,10 +56,21 @@ export const Login = () => {
               <p>Password: free</p>
             </FormLabel>
             <FormGroup>
-              <TextField label="Email" margin="normal" {...formik.getFieldProps("email")} />
-              {formik.errors.email ? <div>{formik.errors.email}</div> : null}
-              <TextField type="password" label="Password" margin="normal" {...formik.getFieldProps("password")} />
-              {formik.errors.password ? <div>{formik.errors.password}</div> : null}
+              <TextField
+                label="Email"
+                margin="normal"
+                error={formik.errors.email && formik.touched.email ? true : false}
+                {...formik.getFieldProps("email")}
+              />
+              {formik.errors.email ? <div style={{ color: "red" }}>{formik.errors.email}</div> : null}
+              <TextField
+                error={formik.errors.password && formik.touched.password ? true : false}
+                type="password"
+                label="Password"
+                margin="normal"
+                {...formik.getFieldProps("password")}
+              />
+              {formik.errors.password ? <div style={{ color: "red" }}>{formik.errors.password}</div> : null}
               <FormControlLabel
                 label={"Remember me"}
                 control={<Checkbox {...formik.getFieldProps("rememberMe")} checked={formik.values.rememberMe} />}
