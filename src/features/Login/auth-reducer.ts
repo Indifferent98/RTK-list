@@ -1,5 +1,5 @@
 import { Dispatch } from "redux";
-import { SetAppErrorActionType, setAppStatusAC, SetAppStatusActionType } from "../../app/app-reducer";
+import { setAppErrortionType, setAppStatus, setAppStatustionType } from "../../app/app-reducer";
 import { authAPI, LoginParamsType } from "../../api/todolists-api";
 import { handleServerAppError, handleServerNetworkError } from "../../utils/error-utils";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
@@ -24,14 +24,14 @@ export const { setIsLoggedIn } = slice.actions;
 
 // thunks
 export const loginTC =
-  (data: LoginParamsType) => (dispatch: Dispatch<ActionsType | SetAppStatusActionType | SetAppErrorActionType>) => {
-    dispatch(setAppStatusAC("loading"));
+  (data: LoginParamsType) => (dispatch: Dispatch<ActionsType | setAppStatustionType | setAppErrortionType>) => {
+    dispatch(setAppStatus({ status: "loading" }));
     authAPI
       .login(data)
       .then((res) => {
         if (res.data.resultCode === 0) {
           dispatch(setIsLoggedIn({ isLoggedIn: true }));
-          dispatch(setAppStatusAC("succeeded"));
+          dispatch(setAppStatus({ status: "succeeded" }));
         } else {
           handleServerAppError(res.data, dispatch);
         }
@@ -40,14 +40,14 @@ export const loginTC =
         handleServerNetworkError(error, dispatch);
       });
   };
-export const logoutTC = () => (dispatch: Dispatch<ActionsType | SetAppStatusActionType | SetAppErrorActionType>) => {
-  dispatch(setAppStatusAC("loading"));
+export const logoutTC = () => (dispatch: Dispatch<ActionsType | setAppStatustionType | setAppErrortionType>) => {
+  dispatch(setAppStatus({ status: "loading" }));
   authAPI
     .logout()
     .then((res) => {
       if (res.data.resultCode === 0) {
         dispatch(setIsLoggedIn({ isLoggedIn: false }));
-        dispatch(setAppStatusAC("succeeded"));
+        dispatch(setAppStatus({ status: "succeeded" }));
       } else {
         handleServerAppError(res.data, dispatch);
       }
@@ -64,4 +64,4 @@ type InitialStateType = {
   isLoggedIn: boolean;
 };
 
-type ThunkDispatch = Dispatch<ActionsType | SetAppStatusActionType | SetAppErrorActionType>;
+type ThunkDispatch = Dispatch<ActionsType | setAppStatustionType | setAppErrortionType>;
