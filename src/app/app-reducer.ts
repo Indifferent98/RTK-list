@@ -3,21 +3,11 @@ import { authAPI } from "../api/todolists-api";
 import { setIsLoggedIn } from "../features/Login/auth-reducer";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
-const initialState: InitialStateType = {
-  status: "idle",
-  error: null,
-  isInitialized: false,
-};
 export type RequestStatusType = "idle" | "loading" | "succeeded" | "failed";
-export type InitialStateType = {
-  status: RequestStatusType;
-  error: string | null;
-  isInitialized: boolean;
-};
 
 const slice = createSlice({
   name: "app",
-  initialState,
+  initialState: { status: "idle" as RequestStatusType, error: null as string | null, isInitialized: false },
   reducers: {
     setAppError(state, action: PayloadAction<{ error: string | null }>) {
       state.error = action.payload.error;
@@ -44,7 +34,9 @@ export const initializeAppTC = () => (dispatch: Dispatch) => {
   });
 };
 
-export type setAppErrortionType = ReturnType<typeof setAppError>;
-export type setAppStatustionType = ReturnType<typeof setAppStatus>;
+export type initialStateType = ReturnType<typeof slice.getInitialState>;
 
-type ActionsType = setAppErrortionType | setAppStatustionType | ReturnType<typeof setAppInitialized>;
+export type setAppErrorActionType = ReturnType<typeof setAppError>;
+export type setAppStatusActionType = ReturnType<typeof setAppStatus>;
+
+type ActionsType = setAppErrorActionType | setAppStatusActionType | ReturnType<typeof setAppInitialized>;

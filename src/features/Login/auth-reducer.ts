@@ -1,16 +1,18 @@
 import { Dispatch } from "redux";
-import { setAppErrortionType, setAppStatus, setAppStatustionType } from "../../app/app-reducer";
+import { setAppErrorActionType, setAppStatus, setAppStatusActionType } from "../../app/app-reducer";
 import { authAPI, LoginParamsType } from "../../api/todolists-api";
 import { handleServerAppError, handleServerNetworkError } from "../../utils/error-utils";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-const initialState: InitialStateType = {
-  isLoggedIn: false,
-};
+// const initialState: InitialStateType = {
+//   isLoggedIn: false,
+// };
 
 const slice = createSlice({
   name: "auth",
-  initialState,
+  initialState: {
+    isLoggedIn: false,
+  },
   reducers: {
     setIsLoggedIn(state, action: PayloadAction<{ isLoggedIn: boolean }>) {
       state.isLoggedIn = action.payload.isLoggedIn;
@@ -24,7 +26,7 @@ export const { setIsLoggedIn } = slice.actions;
 
 // thunks
 export const loginTC =
-  (data: LoginParamsType) => (dispatch: Dispatch<ActionsType | setAppStatustionType | setAppErrortionType>) => {
+  (data: LoginParamsType) => (dispatch: Dispatch<ActionsType | setAppStatusActionType | setAppErrorActionType>) => {
     dispatch(setAppStatus({ status: "loading" }));
     authAPI
       .login(data)
@@ -40,7 +42,7 @@ export const loginTC =
         handleServerNetworkError(error, dispatch);
       });
   };
-export const logoutTC = () => (dispatch: Dispatch<ActionsType | setAppStatustionType | setAppErrortionType>) => {
+export const logoutTC = () => (dispatch: Dispatch<ActionsType | setAppStatusActionType | setAppErrorActionType>) => {
   dispatch(setAppStatus({ status: "loading" }));
   authAPI
     .logout()
@@ -60,8 +62,6 @@ export const logoutTC = () => (dispatch: Dispatch<ActionsType | setAppStatustion
 // types
 
 type ActionsType = ReturnType<typeof setIsLoggedIn>;
-type InitialStateType = {
-  isLoggedIn: boolean;
-};
+type InitialStateType = ReturnType<typeof slice.getInitialState>;
 
-type ThunkDispatch = Dispatch<ActionsType | setAppStatustionType | setAppErrortionType>;
+type ThunkDispatch = Dispatch<ActionsType | setAppStatusActionType | setAppErrorActionType>;
