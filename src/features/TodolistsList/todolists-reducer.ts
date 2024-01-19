@@ -44,7 +44,7 @@ const slice = createSlice({
         filter: "all",
         entityStatus: "idle",
       }));
-      state = todolistsForSet;
+      return todolistsForSet;
     },
   },
 });

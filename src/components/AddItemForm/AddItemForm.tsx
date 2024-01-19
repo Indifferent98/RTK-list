@@ -5,9 +5,14 @@ import { AddBox } from "@mui/icons-material";
 type AddItemFormPropsType = {
   addItem: (title: string) => void;
   disabled?: boolean;
+  variant?: "standard" | "outlined" | "filled";
 };
 
-export const AddItemForm = React.memo(function ({ addItem, disabled = false }: AddItemFormPropsType) {
+export const AddItemForm = React.memo(function ({
+  addItem,
+  disabled = false,
+  variant = "outlined",
+}: AddItemFormPropsType) {
   let [title, setTitle] = useState("");
   let [error, setError] = useState<string | null>(null);
 
@@ -36,7 +41,7 @@ export const AddItemForm = React.memo(function ({ addItem, disabled = false }: A
   return (
     <div>
       <TextField
-        variant="outlined"
+        variant={variant}
         disabled={disabled}
         error={!!error}
         value={title}

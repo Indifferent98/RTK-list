@@ -13,8 +13,6 @@ import { setAppError, setAppErrorActionType, setAppStatus, setAppStatusActionTyp
 import { handleServerAppError, handleServerNetworkError } from "../../utils/error-utils";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
-// const initialState: TasksStateType = {};
-
 const slice = createSlice({
   name: "tasks",
   initialState: {} as TasksStateType,
@@ -58,20 +56,20 @@ const slice = createSlice({
   },
 });
 
-const { removeTaskAC, addTaskAC, updateTaskAC, setTasksAC } = slice.actions;
-
+export const { removeTaskAC, addTaskAC, updateTaskAC, setTasksAC } = slice.actions;
+export const tasksReducer = slice.reducer;
 // thunks
 export const fetchTasksTC = (todolistId: string) => (dispatch: Dispatch<ActionsType | setAppStatusActionType>) => {
   dispatch(setAppStatus({ status: "loading" }));
   todolistsAPI.getTasks(todolistId).then((res) => {
     const tasks = res.data.items;
-    dispatch(setTasksAC(tasks, todolistId));
+    dispatch(setTasksAC({ tasks, todolistId }));
     dispatch(setAppStatus({ status: "succeeded" }));
   });
 };
 export const removeTaskTC = (taskId: string, todolistId: string) => (dispatch: Dispatch<ActionsType>) => {
   todolistsAPI.deleteTask(todolistId, taskId).then((res) => {
-    const action = removeTaskAC(taskId, todolistId);
+    const action = removeTaskAC({ taskId, todolistId });
     dispatch(action);
   });
 };
@@ -84,7 +82,7 @@ export const addTaskTC =
       .then((res) => {
         if (res.data.resultCode === 0) {
           const task = res.data.data.item;
-          const action = addTaskAC(task);
+          const action = addTaskAC({ task });
           dispatch(action);
           dispatch(setAppStatus({ status: "succeeded" }));
         } else {
@@ -120,7 +118,7 @@ export const updateTaskTC =
       .updateTask(todolistId, taskId, apiModel)
       .then((res) => {
         if (res.data.resultCode === 0) {
-          const action = updateTaskAC(taskId, domainModel, todolistId);
+          const action = updateTaskAC({ model: domainModel, taskId, todolistId });
           dispatch(action);
         } else {
           handleServerAppError(res.data, dispatch);
