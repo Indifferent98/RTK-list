@@ -3,6 +3,8 @@ import { setAppErrorActionType, setAppStatus, setAppStatusActionType } from "app
 import { authAPI, LoginParamsType } from "api/todolists-api";
 import { handleServerAppError, handleServerNetworkError } from "utils/error-utils";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { clearTasksData } from "features/TodolistsList/tasks-reducer";
+import { clearTodosData } from "features/TodolistsList/todolists-reducer";
 
 const slice = createSlice({
   name: "auth",
@@ -38,7 +40,7 @@ export const loginTC =
         handleServerNetworkError(error, dispatch);
       });
   };
-export const logoutTC = () => (dispatch: Dispatch<ActionsType | setAppStatusActionType | setAppErrorActionType>) => {
+export const logoutTC = () => (dispatch: Dispatch) => {
   dispatch(setAppStatus({ status: "loading" }));
   authAPI
     .logout()
@@ -49,6 +51,10 @@ export const logoutTC = () => (dispatch: Dispatch<ActionsType | setAppStatusActi
       } else {
         handleServerAppError(res.data, dispatch);
       }
+    })
+    .then(() => {
+      dispatch(clearTasksData());
+      dispatch(clearTodosData());
     })
     .catch((error) => {
       handleServerNetworkError(error, dispatch);

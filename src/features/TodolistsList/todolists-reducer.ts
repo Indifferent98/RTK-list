@@ -47,6 +47,9 @@ const slice = createSlice({
       }));
       return todolistsForSet;
     },
+    clearTodosData(state, action: PayloadAction) {
+      return [];
+    },
   },
 });
 
@@ -58,6 +61,7 @@ export const {
   changeTodolistTitle,
   addTodolist,
   removeTodolist,
+  clearTodosData,
 } = slice.actions;
 
 // thunks

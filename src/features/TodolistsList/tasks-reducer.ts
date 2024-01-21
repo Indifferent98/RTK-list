@@ -37,6 +37,9 @@ const slice = createSlice({
     setTasks(state, action: PayloadAction<{ tasks: TaskType[]; todolistId: string }>) {
       state[action.payload.todolistId] = action.payload.tasks;
     },
+    clearTasksData(state, action: PayloadAction) {
+      return {};
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -54,7 +57,7 @@ const slice = createSlice({
   },
 });
 
-export const { removeTask, addTask, updateTask, setTasks } = slice.actions;
+export const { removeTask, addTask, updateTask, setTasks, clearTasksData } = slice.actions;
 export const tasksReducer = slice.reducer;
 // thunks
 export const fetchTasksTC = (todolistId: string) => (dispatch: Dispatch<ActionsType | setAppStatusActionType>) => {
