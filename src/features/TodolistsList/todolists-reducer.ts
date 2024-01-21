@@ -4,7 +4,7 @@ import { RequestStatusType, setAppErrorActionType, setAppStatus, setAppStatusAct
 import { handleServerNetworkError } from "utils/error-utils";
 import { AppThunk } from "app/store";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { fetchTasksTC } from "./tasks-reducer";
+import { tasksThunks } from "./tasks-reducer";
 
 // const initialState: Array<TodolistDomainType> = [];
 
@@ -78,7 +78,7 @@ export const fetchTodolistsTC = (): AppThunk => {
       })
       .then((todolists) => {
         todolists.forEach((t) => {
-          dispatch(fetchTasksTC(t.id));
+          dispatch(tasksThunks.fetchTasksTC(t.id));
         });
       })
       .catch((error) => {

@@ -17,7 +17,7 @@ import { AddItemForm } from "components/AddItemForm/AddItemForm";
 import { Todolist } from "./Todolist/Todolist";
 import { Navigate } from "react-router-dom";
 import { useAppDispatch } from "hooks/useAppDispatch";
-import { selectIsLoggedIn } from "app/app-selectors";
+import { selectIsLoggedIn } from "app/selectors";
 
 type PropsType = {
   demo?: boolean;
@@ -59,8 +59,7 @@ export const TodolistsList: React.FC<PropsType> = ({ demo = false }) => {
   }, []);
 
   const changeFilter = useCallback(function (value: FilterValuesType, todolistId: string) {
-    const action = changeTodolistFilter({ filter: value, todolistId });
-    dispatch(action);
+    dispatch(changeTodolistFilter({ filter: value, todolistId }));
   }, []);
 
   const removeTodolist = useCallback(function (id: string) {

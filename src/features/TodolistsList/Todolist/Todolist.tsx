@@ -7,7 +7,7 @@ import { TaskStatuses, TaskType } from "api/todolists-api";
 import { useAppDispatch } from "hooks/useAppDispatch";
 import { Button, IconButton } from "@mui/material";
 import { Delete } from "@mui/icons-material";
-import { fetchTasksTC } from "../tasks-reducer";
+
 import { TodolistDomainType, FilterValuesType } from "../todolists-reducer";
 
 type PropsType = {

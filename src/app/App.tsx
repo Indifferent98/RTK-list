@@ -19,7 +19,7 @@ import {
   Typography,
 } from "@mui/material";
 import { Menu } from "@mui/icons-material";
-import { selectIsInitialized, selectIsLoggedIn, selectStatus } from "./app-selectors";
+import { selectIsInitialized, selectIsLoggedIn, selectStatus } from "./selectors";
 
 type PropsType = {
   demo?: boolean;

@@ -1,6 +1,7 @@
-import { TaskStatuses, TaskPriorities } from "api/todolists-api";
-import { addTask, removeTask, setTasks, tasksReducer, TasksStateType, updateTask } from "./tasks-reducer";
+import { TaskStatuses, TaskPriorities, TaskType } from "api/todolists-api";
+import { addTask, removeTask, tasksReducer, TasksStateType, tasksThunks, updateTask } from "./tasks-reducer";
 import { addTodolist, removeTodolist, setTodolists } from "./todolists-reducer";
+import { v1 } from "uuid";
 
 let startState: TasksStateType = {};
 beforeEach(() => {
@@ -183,17 +184,64 @@ test("empty arrays should be added when we set todolists", () => {
   expect(endState["1"]).toBeDefined();
   expect(endState["2"]).toBeDefined();
 });
+
 test("tasks should be added for todolist", () => {
-  const action = setTasks({ tasks: startState["todolistId1"], todolistId: "todolistId1" });
-
-  const endState = tasksReducer(
+  // const action = setTasks({ tasks: startState["todolistId1"], todolistId: "todolistId1" });
+  const todolistId3 = v1();
+  const todolistId4 = v1();
+  const startTasks: TasksStateType = {
+    [todolistId4]: [],
+    [todolistId3]: [],
+  };
+  const tasks: TaskType[] = [
     {
-      todolistId2: [],
-      todolistId1: [],
+      addedDate: "",
+      deadline: "",
+      description: "",
+      id: "32423",
+      order: 0,
+      priority: TaskPriorities.Low,
+      startDate: "asr",
+      status: TaskStatuses.New,
+      title: "new title",
+      todoListId: todolistId3,
     },
-    action,
+    {
+      addedDate: "",
+      deadline: "",
+      description: "",
+      id: "32423",
+      order: 0,
+      priority: TaskPriorities.Low,
+      startDate: "asr",
+      status: TaskStatuses.New,
+      title: "new title2",
+      todoListId: todolistId3,
+    },
+    {
+      addedDate: "",
+      deadline: "",
+      description: "",
+      id: "32423",
+      order: 0,
+      priority: TaskPriorities.Low,
+      startDate: "asr",
+      status: TaskStatuses.New,
+      title: "new title3",
+      todoListId: todolistId3,
+    },
+  ];
+  const endState = tasksReducer(
+    startTasks,
+    tasksThunks.fetchTasksTC.fulfilled(
+      {
+        tasks,
+        todolistId: todolistId3,
+      },
+      "requestId",
+      todolistId3,
+    ),
   );
-
-  expect(endState["todolistId1"].length).toBe(3);
-  expect(endState["todolistId2"].length).toBe(0);
+  expect(endState[todolistId3].length).toBe(3);
+  expect(endState[todolistId4].length).toBe(0);
 });
