@@ -21,3 +21,6 @@ export type AppRootStateType = ReturnType<typeof rootReducer>;
 export type AppThunk<ReturnType = void> = ThunkAction<ReturnType, AppRootStateType, unknown, UnknownAction>;
 
 export type AppDispatch = ThunkDispatch<AppRootStateType, unknown, UnknownAction>;
+
+//@ts-ignore
+window.store = store;

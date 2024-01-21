@@ -79,8 +79,7 @@ export const addTaskTC =
       .createTask(todolistId, title)
       .then((res) => {
         if (res.data.resultCode === 0) {
-          const task = res.data.data.item;
-          const action = addTask({ task });
+          const action = addTask({ task: res.data.data.item });
           dispatch(action);
           dispatch(setAppStatus({ status: "succeeded" }));
         } else {
