@@ -2,7 +2,6 @@ import React from "react";
 import { useFormik } from "formik";
 import { useSelector } from "react-redux";
 import { loginTC } from "./auth-reducer";
-import { AppRootStateType } from "app/store";
 import { Navigate } from "react-router-dom";
 import { useAppDispatch } from "hooks/useAppDispatch";
 import { Button, Checkbox, FormControl, FormControlLabel, FormGroup, FormLabel, Grid, TextField } from "@mui/material";
@@ -71,7 +70,9 @@ export const Login = () => {
                 margin="normal"
                 {...formik.getFieldProps("password")}
               />
-              {formik.errors.password ? <div style={{ color: "red" }}>{formik.errors.password}</div> : null}
+              {formik.errors.password && formik.touched.password ? (
+                <div style={{ color: "red" }}>{formik.errors.password}</div>
+              ) : null}
               <FormControlLabel
                 label={"Remember me"}
                 control={<Checkbox {...formik.getFieldProps("rememberMe")} checked={formik.values.rememberMe} />}

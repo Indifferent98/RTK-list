@@ -186,7 +186,6 @@ test("empty arrays should be added when we set todolists", () => {
 });
 
 test("tasks should be added for todolist", () => {
-  // const action = setTasks({ tasks: startState["todolistId1"], todolistId: "todolistId1" });
   const todolistId3 = v1();
   const todolistId4 = v1();
   const startTasks: TasksStateType = {
@@ -218,18 +217,6 @@ test("tasks should be added for todolist", () => {
       title: "new title2",
       todoListId: todolistId3,
     },
-    {
-      addedDate: "",
-      deadline: "",
-      description: "",
-      id: "32423",
-      order: 0,
-      priority: TaskPriorities.Low,
-      startDate: "asr",
-      status: TaskStatuses.New,
-      title: "new title3",
-      todoListId: todolistId3,
-    },
   ];
   const endState = tasksReducer(
     startTasks,
@@ -242,6 +229,6 @@ test("tasks should be added for todolist", () => {
       todolistId3,
     ),
   );
-  expect(endState[todolistId3].length).toBe(3);
+  expect(endState[todolistId3].length).toBe(2);
   expect(endState[todolistId4].length).toBe(0);
 });
