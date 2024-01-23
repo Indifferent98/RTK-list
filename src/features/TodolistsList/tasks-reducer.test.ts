@@ -1,5 +1,5 @@
 import { TaskStatuses, TaskPriorities, TaskType } from "api/todolists-api";
-import { addTask, removeTask, tasksReducer, TasksStateType, tasksThunks, updateTask } from "./tasks-reducer";
+import { tasksReducer, TasksStateType, tasksThunks, updateTask } from "./tasks-reducer";
 import { addTodolist, removeTodolist, setTodolists } from "./todolists-reducer";
 import { v1 } from "uuid";
 
@@ -86,9 +86,21 @@ beforeEach(() => {
 });
 
 test("correct task should be deleted from correct array", () => {
-  const action = removeTask({ taskId: "2", todolistId: "todolistId2" });
-
-  const endState = tasksReducer(startState, action);
+  const obj = {
+    taskId: "2",
+    todolistId: "todolistId2",
+  };
+  const endState = tasksReducer(
+    startState,
+    tasksThunks.removeTaskTC.fulfilled(
+      {
+        taskId: "2",
+        todolistId: "todolistId2",
+      },
+      "requiredId",
+      { taskId: "2", todolistId: "todolistId2" },
+    ),
+  );
 
   expect(endState["todolistId1"].length).toBe(3);
   expect(endState["todolistId2"].length).toBe(2);
@@ -96,22 +108,28 @@ test("correct task should be deleted from correct array", () => {
 });
 test("correct task should be added to correct array", () => {
   //const action = addTask("juce", "todolistId2");
-  const action = addTask({
-    task: {
-      todoListId: "todolistId2",
-      title: "juce",
-      status: TaskStatuses.New,
-      addedDate: "",
-      deadline: "",
-      description: "",
-      order: 0,
-      priority: 0,
-      startDate: "",
-      id: "id exists",
-    },
-  });
 
-  const endState = tasksReducer(startState, action);
+  const endState = tasksReducer(
+    startState,
+    tasksThunks.addTaskTC.fulfilled(
+      {
+        task: {
+          todoListId: "todolistId2",
+          title: "juce",
+          status: TaskStatuses.New,
+          addedDate: "",
+          deadline: "",
+          description: "",
+          order: 0,
+          priority: 0,
+          startDate: "",
+          id: "id exists",
+        },
+      },
+      "requiredId",
+      { title: "juce", todolistId: "todolistId2" },
+    ),
+  );
 
   expect(endState["todolistId1"].length).toBe(3);
   expect(endState["todolistId2"].length).toBe(4);
@@ -119,6 +137,7 @@ test("correct task should be added to correct array", () => {
   expect(endState["todolistId2"][0].title).toBe("juce");
   expect(endState["todolistId2"][0].status).toBe(TaskStatuses.New);
 });
+
 test("status of specified task should be changed", () => {
   const action = updateTask({ todolistId: "todolistId2", taskId: "2", model: { status: TaskStatuses.New } });
 
