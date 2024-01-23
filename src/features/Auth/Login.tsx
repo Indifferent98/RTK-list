@@ -3,9 +3,9 @@ import { useFormik } from "formik";
 import { useSelector } from "react-redux";
 import { loginTC } from "./auth-reducer";
 import { Navigate } from "react-router-dom";
-import { useAppDispatch } from "hooks/useAppDispatch";
+import { useAppDispatch } from "common/hooks/useAppDispatch";
 import { Button, Checkbox, FormControl, FormControlLabel, FormGroup, FormLabel, Grid, TextField } from "@mui/material";
-import { selectIsLoggedIn } from "app/selectors";
+import { selectIsLoggedIn } from "./auth-selectors";
 
 export const Login = () => {
   const dispatch = useAppDispatch();

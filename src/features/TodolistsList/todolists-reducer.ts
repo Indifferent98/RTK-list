@@ -1,12 +1,11 @@
 import { todolistsAPI, TodolistType } from "api/todolists-api";
 import { Dispatch } from "redux";
 import { RequestStatusType, setAppErrorActionType, setAppStatus, setAppStatusActionType } from "app/app-reducer";
-import { handleServerNetworkError } from "utils/error-utils";
+
 import { AppThunk } from "app/store";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { tasksThunks } from "./tasks-reducer";
-
-// const initialState: Array<TodolistDomainType> = [];
+import { handleServerNetworkError } from "common/utils";
 
 const slice = createSlice({
   name: "todolists",

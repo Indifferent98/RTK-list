@@ -10,10 +10,11 @@ import {
 } from "api/todolists-api";
 
 import { setAppStatus } from "app/app-reducer";
-import { handleServerAppError, handleServerNetworkError } from "utils/error-utils";
+
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { ResponseType } from "api/todolists-api";
-import { createAppAsyncThunk } from "utils/createAppAsyncThunk";
+import { createAppAsyncThunk } from "common/utils/createAppAsyncThunk";
+import { handleServerAppError, handleServerNetworkError } from "common/utils";
 
 const fetchTasksTC = createAppAsyncThunk<{ tasks: TaskType[]; todolistId: string }, string>(
   "/tasks/fetchTasks",

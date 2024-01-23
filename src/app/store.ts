@@ -5,7 +5,7 @@ import { ThunkAction, ThunkDispatch } from "redux-thunk";
 import { appReducer } from "./app-reducer";
 
 import { configureStore, UnknownAction } from "@reduxjs/toolkit";
-import { authReducer } from "features/Login/auth-reducer";
+import { authReducer } from "features/Auth/auth-reducer";
 
 const rootReducer = combineReducers({
   tasks: tasksReducer,
