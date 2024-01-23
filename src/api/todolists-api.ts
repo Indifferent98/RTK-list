@@ -1,4 +1,5 @@
 import axios from "axios";
+import { UpdateDomainTaskModelType } from "features/TodolistsList/tasks-reducer";
 
 const settings = {
   withCredentials: true,
@@ -90,6 +91,12 @@ export enum TaskPriorities {
   Urgently = 3,
   Later = 4,
 }
+export const ResponseResultCode = {
+  success: 0,
+  error: 1,
+  captcha: 10,
+} as const;
+
 export type TaskType = {
   description: string;
   title: string;
@@ -115,3 +122,5 @@ type GetTasksResponse = {
   totalCount: number;
   items: TaskType[];
 };
+
+export type ArgUpdateTaskType = { model: UpdateDomainTaskModelType; todolistId: string; taskId: string };

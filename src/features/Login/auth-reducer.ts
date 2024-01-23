@@ -1,6 +1,6 @@
 import { Dispatch } from "redux";
 import { setAppErrorActionType, setAppStatus, setAppStatusActionType } from "app/app-reducer";
-import { authAPI, LoginParamsType } from "api/todolists-api";
+import { authAPI, LoginParamsType, ResponseResultCode } from "api/todolists-api";
 import { handleServerAppError, handleServerNetworkError } from "utils/error-utils";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { clearTasksData } from "features/TodolistsList/tasks-reducer";
@@ -29,7 +29,7 @@ export const loginTC =
     authAPI
       .login(data)
       .then((res) => {
-        if (res.data.resultCode === 0) {
+        if (res.data.resultCode === ResponseResultCode.success) {
           dispatch(setIsLoggedIn({ isLoggedIn: true }));
           dispatch(setAppStatus({ status: "succeeded" }));
         } else {
@@ -45,7 +45,7 @@ export const logoutTC = () => (dispatch: Dispatch) => {
   authAPI
     .logout()
     .then((res) => {
-      if (res.data.resultCode === 0) {
+      if (res.data.resultCode === ResponseResultCode.success) {
         dispatch(setIsLoggedIn({ isLoggedIn: false }));
         dispatch(setAppStatus({ status: "succeeded" }));
       } else {
@@ -64,6 +64,3 @@ export const logoutTC = () => (dispatch: Dispatch) => {
 // types
 
 type ActionsType = ReturnType<typeof setIsLoggedIn>;
-type InitialStateType = ReturnType<typeof slice.getInitialState>;
-
-type ThunkDispatch = Dispatch<ActionsType | setAppStatusActionType | setAppErrorActionType>;

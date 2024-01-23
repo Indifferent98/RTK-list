@@ -144,7 +144,7 @@ test("status of specified task should be changed", () => {
     tasksThunks.updateTaskTC.fulfilled(
       { taskId: "2", todolistId: "todolistId2", model: { status: TaskStatuses.New } },
       "requiredId",
-      { domainModel: {} as UpdateDomainTaskModelType, taskId: "2", todolistId: "todolistId2" },
+      { model: {} as UpdateDomainTaskModelType, taskId: "2", todolistId: "todolistId2" },
     ),
   );
 
@@ -157,7 +157,7 @@ test("title of specified task should be changed", () => {
     tasksThunks.updateTaskTC.fulfilled(
       { taskId: "2", todolistId: "todolistId2", model: { title: "yogurt" } },
       "requiredId",
-      { domainModel: {} as UpdateDomainTaskModelType, taskId: "2", todolistId: "todolistId2" },
+      { model: {} as UpdateDomainTaskModelType, taskId: "2", todolistId: "todolistId2" },
     ),
   );
 
