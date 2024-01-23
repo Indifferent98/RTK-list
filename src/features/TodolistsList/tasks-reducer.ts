@@ -13,28 +13,29 @@ import { setAppErrorActionType, setAppStatus, setAppStatusActionType } from "app
 import { handleServerAppError, handleServerNetworkError } from "utils/error-utils";
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { ResponseType } from "api/todolists-api";
+import { createAppAsyncThunk } from "utils/createAppAsyncThunk";
+import { AxiosError } from "axios";
 
-const fetchTasksTC = createAsyncThunk<
-  { tasks: TaskType[]; todolistId: string },
-  string,
-  { state: AppRootStateType; Dispatch: AppDispatch; rejectValue: null }
->("/tasks/fetchTasks", async (todolistId: string, thunkAPI) => {
-  const { dispatch, rejectWithValue } = thunkAPI;
-  dispatch(setAppStatus({ status: "loading" }));
-  try {
-    const res = await todolistsAPI.getTasks(todolistId);
-    if (res.data.items) {
-      dispatch(setAppStatus({ status: "succeeded" }));
-      return { tasks: res.data.items, todolistId };
-    } else {
-      handleServerAppError({ messages: [res.data.error] } as ResponseType, dispatch);
-      return { tasks: [], todolistId: "" };
+const fetchTasksTC = createAppAsyncThunk<{ tasks: TaskType[]; todolistId: string }, string>(
+  "/tasks/fetchTasks",
+  async (todolistId: string, thunkAPI) => {
+    const { dispatch, rejectWithValue } = thunkAPI;
+    dispatch(setAppStatus({ status: "loading" }));
+    try {
+      const res = await todolistsAPI.getTasks(todolistId);
+      if (res.data.items) {
+        dispatch(setAppStatus({ status: "succeeded" }));
+        return { tasks: res.data.items, todolistId };
+      } else {
+        handleServerAppError({ messages: [res.data.error] } as ResponseType, dispatch);
+        return { tasks: [], todolistId: "" };
+      }
+    } catch (error) {
+      handleServerNetworkError(error as { message: string }, dispatch);
+      return rejectWithValue(null);
     }
-  } catch (error) {
-    handleServerNetworkError(error as { message: string }, dispatch);
-    return rejectWithValue(null);
-  }
-});
+  },
+);
 
 const slice = createSlice({
   name: "tasks",
