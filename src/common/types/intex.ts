@@ -1,2 +1,2 @@
 import React from "react";
-export type { ResponseType } from "./types";
+export type { BaseResponseType } from "./types";

@@ -1,5 +1,5 @@
 import React from "react";
-export type ResponseType<D = {}> = {
+export type BaseResponseType<D = {}> = {
   resultCode: number;
   messages: Array<string>;
   data: D;

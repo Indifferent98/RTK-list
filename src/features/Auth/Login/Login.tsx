@@ -9,33 +9,49 @@ import { selectIsLoggedIn } from "../auth-selectors";
 import { authThunks } from "../auth-reducer";
 
 export const Login = () => {
-  const dispatch = useAppDispatch();
-
   const isLoggedIn = useSelector(selectIsLoggedIn);
 
+  type formikErrorsType = {
+    email?: string;
+    password?: string;
+    rememberMe?: string;
+  };
+
+  const dispatch = useAppDispatch();
   const formik = useFormik({
-    validate: (values) => {
-      if (!values.email) {
-        return {
-          email: "Email is required",
-        };
-      }
-      if (!values.password) {
-        return {
-          password: "Password is required",
-        };
-      }
-    },
     initialValues: {
-      email: "",
       password: "",
+      email: "",
       rememberMe: false,
     },
+    validate: (values) => {
+      const errors: formikErrorsType = {};
+      if (!values.email) {
+        errors.email = "Required";
+      } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)) {
+        errors.email = "Invalid email address";
+      }
+      if (!values.password) {
+        errors.password = "Password is required";
+      } else if (values.password.trim().length < 4) {
+        errors.password = "Password must be longer";
+      }
+      return errors;
+    },
+
     onSubmit: (values) => {
       dispatch(authThunks.LoginTC(values));
+      formik.resetForm();
     },
   });
-
+  const buttonDisableCondition =
+    formik.errors.email ||
+    formik.errors.password ||
+    formik.errors.rememberMe ||
+    !formik.values.email.length ||
+    !formik.values.password.length
+      ? true
+      : false;
   if (isLoggedIn) {
     return <Navigate to={"/"} />;
   }
@@ -78,7 +94,7 @@ export const Login = () => {
                 label={"Remember me"}
                 control={<Checkbox {...formik.getFieldProps("rememberMe")} checked={formik.values.rememberMe} />}
               />
-              <Button type={"submit"} variant={"contained"} color={"primary"}>
+              <Button type={"submit"} variant={"contained"} color={"primary"} disabled={buttonDisableCondition}>
                 Login
               </Button>
             </FormGroup>

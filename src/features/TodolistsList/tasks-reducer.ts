@@ -8,7 +8,7 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { createAppAsyncThunk } from "common/utils/createAppAsyncThunk";
 import { handleServerAppError, handleServerNetworkError } from "common/utils";
 import { ResponseResultCode, TaskPriorities, TaskStatuses } from "common/enum";
-import { ResponseType } from "common/types/types";
+import { BaseResponseType } from "common/types/types";
 
 const fetchTasksTC = createAppAsyncThunk<{ tasks: TaskType[]; todolistId: string }, string>(
   "/tasks/fetchTasks",
@@ -21,7 +21,7 @@ const fetchTasksTC = createAppAsyncThunk<{ tasks: TaskType[]; todolistId: string
         dispatch(setAppStatus({ status: "succeeded" }));
         return { tasks: res.data.items, todolistId };
       } else {
-        handleServerAppError({ messages: [res.data.error] } as ResponseType, dispatch);
+        handleServerAppError({ messages: [res.data.error] } as BaseResponseType, dispatch);
         return { tasks: [], todolistId: "" };
       }
     } catch (error) {

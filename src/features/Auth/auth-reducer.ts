@@ -70,6 +70,7 @@ const initializeAppTC = createAppAsyncThunk<{ isLoggedIn: boolean }, undefined>(
         dispatch(setAppStatus({ status: "succeeded" }));
         return { isLoggedIn: true };
       } else {
+        // handleServerAppError(res.data, dispatch);
         dispatch(setAppStatus({ status: "failed" }));
         return rejectWithValue(null);
       }
@@ -103,6 +104,4 @@ const slice = createSlice({
 });
 
 export const authReducer = slice.reducer;
-export const authActions = slice.actions;
-
 export const authThunks = { LoginTC, LogOutTC, initializeAppTC };
