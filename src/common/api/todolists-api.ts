@@ -1,6 +1,8 @@
 import axios from "axios";
 import { UpdateDomainTaskModelType } from "features/TodolistsList/tasks-reducer";
 import { instance } from "./base-api";
+import { TaskStatuses, TaskPriorities } from "common/enum";
+import { ResponseType } from "common/types/types";
 
 export const todolistsAPI = {
   getTodolists() {
@@ -35,29 +37,6 @@ export type TodolistType = {
   addedDate: string;
   order: number;
 };
-export type ResponseType<D = {}> = {
-  resultCode: number;
-  messages: Array<string>;
-  data: D;
-};
-export enum TaskStatuses {
-  New = 0,
-  InProgress = 1,
-  Completed = 2,
-  Draft = 3,
-}
-export enum TaskPriorities {
-  Low = 0,
-  Middle = 1,
-  Hi = 2,
-  Urgently = 3,
-  Later = 4,
-}
-export const ResponseResultCode = {
-  success: 0,
-  error: 1,
-  captcha: 10,
-} as const;
 
 export type TaskType = {
   description: string;

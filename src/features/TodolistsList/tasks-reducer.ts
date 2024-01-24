@@ -1,20 +1,14 @@
 import { addTodolist, removeTodolist, setTodolists } from "./todolists-reducer";
-import {
-  ArgUpdateTaskType,
-  ResponseResultCode,
-  TaskPriorities,
-  TaskStatuses,
-  TaskType,
-  todolistsAPI,
-  UpdateTaskModelType,
-} from "common/api/todolists-api";
+import { ArgUpdateTaskType, TaskType, todolistsAPI, UpdateTaskModelType } from "common/api/todolists-api";
 
 import { setAppStatus } from "app/app-reducer";
 
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { ResponseType } from "common/api/todolists-api";
+
 import { createAppAsyncThunk } from "common/utils/createAppAsyncThunk";
 import { handleServerAppError, handleServerNetworkError } from "common/utils";
+import { ResponseResultCode, TaskPriorities, TaskStatuses } from "common/enum";
+import { ResponseType } from "common/types/types";
 
 const fetchTasksTC = createAppAsyncThunk<{ tasks: TaskType[]; todolistId: string }, string>(
   "/tasks/fetchTasks",

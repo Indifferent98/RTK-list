@@ -1,4 +1,4 @@
-import { ResponseType } from "./todolists-api";
+import { ResponseType } from "common/types/types";
 import { instance } from "./base-api";
 export type LoginParamsType = {
   email: string;
