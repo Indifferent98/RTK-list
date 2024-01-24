@@ -7,12 +7,12 @@ import {
   TaskType,
   todolistsAPI,
   UpdateTaskModelType,
-} from "api/todolists-api";
+} from "common/api/todolists-api";
 
 import { setAppStatus } from "app/app-reducer";
 
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { ResponseType } from "api/todolists-api";
+import { ResponseType } from "common/api/todolists-api";
 import { createAppAsyncThunk } from "common/utils/createAppAsyncThunk";
 import { handleServerAppError, handleServerNetworkError } from "common/utils";
 

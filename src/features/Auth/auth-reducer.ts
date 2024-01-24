@@ -1,11 +1,12 @@
 import { Dispatch } from "redux";
 import { setAppErrorActionType, setAppStatus, setAppStatusActionType } from "app/app-reducer";
-import { authAPI, LoginParamsType, ResponseResultCode } from "api/todolists-api";
+import { ResponseResultCode } from "common/api/todolists-api";
 
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { clearTasksData } from "features/TodolistsList/tasks-reducer";
 import { clearTodosData } from "features/TodolistsList/todolists-reducer";
 import { handleServerAppError, handleServerNetworkError } from "common/utils";
+import { authAPI, LoginParamsType } from "common/api/auth-api";
 
 const slice = createSlice({
   name: "auth",
