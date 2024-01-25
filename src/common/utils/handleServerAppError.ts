@@ -1,16 +1,18 @@
-import { setAppError, setAppErrorActionType, setAppStatus, setAppStatusActionType } from "app/app-reducer";
+import { setAppError, setAppStatus } from "app/app-reducer";
+import { AppDispatch } from "app/store";
+
 import { BaseResponseType } from "common/types/types";
 
-import { Dispatch } from "redux";
+/**
+ * Обработка ошибок с сервера.
+ *
+ * @template D - тип данных.
+ * @param {BaseResponseType<D>} data - данные с ответом сервера.
+ * @param {AppDispatch} dispatch - функция для отправки действий (actions) в Redux store.
+ * @return {void} - функция ничего не возвращает
+ */
 
-export const handleServerAppError = <D>(
-  data: BaseResponseType<D>,
-  dispatch: Dispatch<setAppErrorActionType | setAppStatusActionType>,
-) => {
-  if (data.messages.length) {
-    dispatch(setAppError({ error: data.messages[0] }));
-  } else {
-    dispatch(setAppError({ error: "Some error occurred" }));
-  }
+export const handleServerAppError = <D>(data: BaseResponseType<D>, dispatch: AppDispatch) => {
+  dispatch(setAppError({ error: data.messages.length ? data.messages[0] : "Some error occurred" }));
   dispatch(setAppStatus({ status: "failed" }));
 };

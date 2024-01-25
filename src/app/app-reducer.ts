@@ -1,8 +1,4 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { authAPI } from "common/api/auth-api";
-import { ResponseResultCode } from "common/enum";
-import { authThunks } from "features/Auth/auth-reducer";
-import { createAppAsyncThunk, handleServerNetworkError } from "common/utils";
 
 export type RequestStatusType = "idle" | "loading" | "succeeded" | "failed";
 
