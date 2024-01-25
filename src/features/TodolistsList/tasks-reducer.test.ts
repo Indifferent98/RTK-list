@@ -1,6 +1,6 @@
 import { TaskType } from "common/api/todolists-api";
-import { tasksReducer, TasksStateType, tasksThunks, UpdateDomainTaskModelType } from "./tasks-reducer";
-import { addTodolist, removeTodolist, setTodolists } from "./todolists-reducer";
+import { setTodolists, tasksReducer, TasksStateType, tasksThunks, UpdateDomainTaskModelType } from "./tasks-reducer";
+import { addTodolist, removeTodolist } from "./todolists-reducer";
 import { v1 } from "uuid";
 import { TaskStatuses, TaskPriorities } from "common/enum";
 

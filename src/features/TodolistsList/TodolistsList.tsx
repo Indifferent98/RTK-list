@@ -5,10 +5,10 @@ import {
   addTodolistTC,
   changeTodolistFilter,
   changeTodolistTitleTC,
-  fetchTodolistsTC,
   FilterValuesType,
   removeTodolistTC,
   TodolistDomainType,
+  todolistThunks,
 } from "./todolists-reducer";
 import { TasksStateType, tasksThunks } from "./tasks-reducer";
 
@@ -19,6 +19,7 @@ import { Navigate } from "react-router-dom";
 import { useAppDispatch } from "common/hooks/useAppDispatch";
 import { selectIsLoggedIn } from "features/Auth/auth-selectors";
 import { TaskStatuses } from "common/enum";
+import { TodolistType } from "common/api/todolists-api";
 
 type PropsType = {
   demo?: boolean;
@@ -35,8 +36,11 @@ export const TodolistsList: React.FC<PropsType> = ({ demo = false }) => {
     if (demo || !isLoggedIn) {
       return;
     }
-    const thunk = fetchTodolistsTC();
-    dispatch(thunk);
+    dispatch(todolistThunks.fetchTodolistsTC()).then((res: any) => {
+      if (res.payload?.todolists) {
+        res.payload.todolists.forEach((t: any) => dispatch(tasksThunks.fetchTasksTC(t.id)));
+      }
+    });
   }, [dispatch]);
 
   const removeTask = useCallback(
@@ -102,7 +106,7 @@ export const TodolistsList: React.FC<PropsType> = ({ demo = false }) => {
   if (!isLoggedIn) {
     return <Navigate to={"/login"} />;
   }
-
+  debugger;
   return (
     <>
       <Grid container style={{ padding: "20px" }}>
@@ -110,14 +114,14 @@ export const TodolistsList: React.FC<PropsType> = ({ demo = false }) => {
       </Grid>
       <Grid container spacing={3}>
         {todolists.map((tl) => {
-          let allTodolistTasks = tasks[tl.id];
+          debugger;
 
           return (
             <Grid item key={tl.id}>
               <Paper style={{ padding: "10px" }}>
                 <Todolist
                   todolist={tl}
-                  tasks={allTodolistTasks}
+                  tasks={tasks[tl.id]}
                   removeTask={removeTask}
                   changeFilter={changeFilter}
                   addTask={addTask}

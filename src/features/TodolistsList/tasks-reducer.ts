@@ -1,5 +1,5 @@
-import { addTodolist, removeTodolist, setTodolists } from "./todolists-reducer";
-import { ArgUpdateTaskType, TaskType, todolistsAPI, UpdateTaskModelType } from "common/api/todolists-api";
+import { addTodolist, removeTodolist } from "./todolists-reducer";
+import { ArgUpdateTaskType, TaskType, todolistsAPI, TodolistType, UpdateTaskModelType } from "common/api/todolists-api";
 
 import { setAppStatus } from "app/app-reducer";
 
@@ -32,7 +32,7 @@ const removeTaskTC = createAppAsyncThunk<
   { taskId: string; todolistId: string },
   { taskId: string; todolistId: string }
 >("/task/removeTask", async (arg, thunkAPI) => {
-  const { dispatch } = thunkAPI;
+  const { dispatch, rejectWithValue } = thunkAPI;
   return thunkTryCatch(thunkAPI, async () => {
     const res = await todolistsAPI.deleteTask(arg.todolistId, arg.taskId);
     if (res.data.resultCode === ResponseResultCode.success) {
@@ -40,7 +40,7 @@ const removeTaskTC = createAppAsyncThunk<
       return arg;
     } else {
       handleServerAppError(res.data, dispatch);
-      return { taskId: "", todolistId: "" };
+      return rejectWithValue(null);
     }
   });
 });
@@ -100,10 +100,19 @@ const slice = createSlice({
     clearTasksData(state, action: PayloadAction) {
       return {};
     },
+    setTodolists(state, action: PayloadAction<{ todolists: TodolistType[] }>) {
+      action.payload.todolists.forEach((tl) => {
+        state[tl.id] = [];
+      });
+    },
   },
+
   extraReducers: (builder) => {
     builder
       .addCase(fetchTasksTC.fulfilled, (state, action) => {
+        debugger;
+        state[action.payload.todolistId] = [];
+
         state[action.payload.todolistId] = action.payload.tasks;
       })
       .addCase(updateTaskTC.fulfilled, (state, action) => {
@@ -128,12 +137,9 @@ const slice = createSlice({
       })
       .addCase(removeTodolist, (state, action) => {
         delete state[action.payload.todolistId];
-      })
-      .addCase(setTodolists, (state, action) => {
-        action.payload.todolists.forEach((tl) => {
-          state[tl.id] = [];
-        });
       });
+
+    // });
   },
 });
 
@@ -149,7 +155,7 @@ export type TasksStateType = {
   [key: string]: Array<TaskType>;
 };
 
-export const { clearTasksData } = slice.actions;
+export const { clearTasksData, setTodolists } = slice.actions;
 export const tasksReducer = slice.reducer;
 export const tasksThunks = { fetchTasksTC, addTaskTC, removeTaskTC, updateTaskTC };
 

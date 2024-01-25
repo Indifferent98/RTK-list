@@ -5,13 +5,14 @@ import {
   changeTodolistTitle,
   FilterValuesType,
   removeTodolist,
-  setTodolists,
   TodolistDomainType,
   todolistsReducer,
+  todolistThunks,
 } from "./todolists-reducer";
 import { v1 } from "uuid";
 import { TodolistType } from "common/api/todolists-api";
 import { RequestStatusType } from "app/app-reducer";
+import { setTodolists } from "./tasks-reducer";
 
 let todolistId1: string;
 let todolistId2: string;
@@ -69,7 +70,10 @@ test("correct filter of todolist should be changed", () => {
   expect(endState[1].filter).toBe(newFilter);
 });
 test("todolists should be added", () => {
-  const endState = todolistsReducer([], setTodolists({ todolists: startState }));
+  const endState = todolistsReducer(
+    [],
+    todolistThunks.fetchTodolistsTC.fulfilled({ todolists: startState }, "requiredId", undefined),
+  );
 
   expect(endState.length).toBe(2);
 });
