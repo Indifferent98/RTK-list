@@ -1,4 +1,4 @@
-import { addTodolist, removeTodolist } from "./todolists-reducer";
+import { todolistThunks } from "./todolists-reducer";
 import { ArgUpdateTaskType, TaskType, todolistsAPI, TodolistType, UpdateTaskModelType } from "common/api/todolists-api";
 
 import { setAppStatus } from "app/app-reducer";
@@ -100,11 +100,6 @@ const slice = createSlice({
     clearTasksData(state, action: PayloadAction) {
       return {};
     },
-    setTodolists(state, action: PayloadAction<{ todolists: TodolistType[] }>) {
-      action.payload.todolists.forEach((tl) => {
-        state[tl.id] = [];
-      });
-    },
   },
 
   extraReducers: (builder) => {
@@ -129,10 +124,10 @@ const slice = createSlice({
           tasks.splice(index, 1);
         }
       })
-      .addCase(addTodolist, (state, action) => {
+      .addCase(todolistThunks.addTodolistTC.fulfilled, (state, action) => {
         state[action.payload.todolist.id] = [];
       })
-      .addCase(removeTodolist, (state, action) => {
+      .addCase(todolistThunks.removeTodolistTC.fulfilled, (state, action) => {
         delete state[action.payload.todolistId];
       });
 
@@ -152,10 +147,6 @@ export type TasksStateType = {
   [key: string]: Array<TaskType>;
 };
 
-export const { clearTasksData, setTodolists } = slice.actions;
+export const { clearTasksData } = slice.actions;
 export const tasksReducer = slice.reducer;
 export const tasksThunks = { fetchTasksTC, addTaskTC, removeTaskTC, updateTaskTC };
-
-// type ActionsType = addTodolisttionType | removeTodolisttionType | setTodoliststionType;
-
-// type ThunkDispatch = Dispatch<ActionsType | setAppStatusActionType | setAppErrorActionType>;

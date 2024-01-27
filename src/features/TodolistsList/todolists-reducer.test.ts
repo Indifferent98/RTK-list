@@ -1,10 +1,8 @@
 import {
-  addTodolist,
   changeTodolistEntityStatus,
   changeTodolistFilter,
   changeTodolistTitle,
   FilterValuesType,
-  removeTodolist,
   TodolistDomainType,
   todolistsReducer,
   todolistThunks,
@@ -12,7 +10,7 @@ import {
 import { v1 } from "uuid";
 import { TodolistType } from "common/api/todolists-api";
 import { RequestStatusType } from "app/app-reducer";
-import { setTodolists } from "./tasks-reducer";
+// import { setTodolists } from "./tasks-reducer";
 
 let todolistId1: string;
 let todolistId2: string;
@@ -28,7 +26,10 @@ beforeEach(() => {
 });
 
 test("correct todolist should be removed", () => {
-  const endState = todolistsReducer(startState, removeTodolist({ todolistId: todolistId1 }));
+  const endState = todolistsReducer(
+    startState,
+    todolistThunks.removeTodolistTC.fulfilled({ todolistId: todolistId1 }, "requiredId", "1212"),
+  );
 
   expect(endState.length).toBe(1);
   expect(endState[0].id).toBe(todolistId2);
@@ -42,7 +43,10 @@ test("correct todolist should be added", () => {
     order: 0,
   };
 
-  const endState = todolistsReducer(startState, addTodolist({ todolist }));
+  const endState = todolistsReducer(
+    startState,
+    todolistThunks.addTodolistTC.fulfilled({ todolist }, "requiredId", "12312"),
+  );
 
   expect(endState.length).toBe(3);
   expect(endState[0].title).toBe(todolist.title);
