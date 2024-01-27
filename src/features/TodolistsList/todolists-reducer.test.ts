@@ -1,7 +1,6 @@
 import {
   changeTodolistEntityStatus,
   changeTodolistFilter,
-  changeTodolistTitle,
   FilterValuesType,
   TodolistDomainType,
   todolistsReducer,
@@ -10,7 +9,6 @@ import {
 import { v1 } from "uuid";
 import { TodolistType } from "common/api/todolists-api";
 import { RequestStatusType } from "app/app-reducer";
-// import { setTodolists } from "./tasks-reducer";
 
 let todolistId1: string;
 let todolistId2: string;
@@ -58,7 +56,10 @@ test("correct todolist should change its name", () => {
 
   const endState = todolistsReducer(
     startState,
-    changeTodolistTitle({ title: newTodolistTitle, todolistId: todolistId2 }),
+    todolistThunks.changeTodolistTitleTC.fulfilled({ title: newTodolistTitle, todolistId: todolistId2 }, "reiredId", {
+      title: newTodolistTitle,
+      todolistId: todolistId2,
+    }),
   );
 
   expect(endState[0].title).toBe("What to learn");

@@ -1,12 +1,9 @@
 import { todolistThunks } from "./todolists-reducer";
-import { ArgUpdateTaskType, TaskType, todolistsAPI, TodolistType, UpdateTaskModelType } from "common/api/todolists-api";
-
+import { ArgUpdateTaskType, TaskType, todolistsAPI, UpdateTaskModelType } from "common/api/todolists-api";
 import { setAppStatus } from "app/app-reducer";
-
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-
 import { createAppAsyncThunk } from "common/utils/createAppAsyncThunk";
-import { handleServerAppError, handleServerNetworkError, thunkTryCatch } from "common/utils";
+import { handleServerAppError, thunkTryCatch } from "common/utils";
 import { ResponseResultCode, TaskPriorities, TaskStatuses } from "common/enum";
 import { BaseResponseType } from "common/types/types";
 
@@ -130,8 +127,6 @@ const slice = createSlice({
       .addCase(todolistThunks.removeTodolistTC.fulfilled, (state, action) => {
         delete state[action.payload.todolistId];
       });
-
-    // });
   },
 });
 
