@@ -19,30 +19,25 @@ import { Navigate } from "react-router-dom";
 import { useAppDispatch } from "common/hooks/useAppDispatch";
 import { selectIsLoggedIn } from "features/Auth/auth-selectors";
 import { TaskStatuses } from "common/enum";
-import { TodolistType } from "common/api/todolists-api";
+import { selectTasks, selectTodolists } from "features/todolists-task-selector";
 
 type PropsType = {
   demo?: boolean;
 };
 
 export const TodolistsList: React.FC<PropsType> = ({ demo = false }) => {
-  const todolists = useSelector<AppRootStateType, Array<TodolistDomainType>>((state) => state.todolists);
-  const tasks = useSelector<AppRootStateType, TasksStateType>((state) => state.tasks);
-  const isLoggedIn = useSelector(selectIsLoggedIn);
-
   const dispatch = useAppDispatch();
-
   useEffect(() => {
     if (demo || !isLoggedIn) {
       return;
     }
-    dispatch(todolistThunks.fetchTodolistsTC()).then((res: any) => {
-      if (res.payload?.todolists) {
-        res.payload.todolists.forEach((t: any) => dispatch(tasksThunks.fetchTasksTC(t.id)));
-      }
-    });
+    dispatch(todolistThunks.fetchTodolistsTC());
   }, [dispatch]);
 
+  const todolists = useSelector(selectTodolists);
+
+  const isLoggedIn = useSelector(selectIsLoggedIn);
+  const tasks = useSelector(selectTasks);
   const removeTask = useCallback(
     function (id: string, todolistId: string) {
       const thunk = tasksThunks.removeTaskTC({ taskId: id, todolistId });
@@ -106,7 +101,7 @@ export const TodolistsList: React.FC<PropsType> = ({ demo = false }) => {
   if (!isLoggedIn) {
     return <Navigate to={"/login"} />;
   }
-  debugger;
+
   return (
     <>
       <Grid container style={{ padding: "20px" }}>
@@ -114,8 +109,6 @@ export const TodolistsList: React.FC<PropsType> = ({ demo = false }) => {
       </Grid>
       <Grid container spacing={3}>
         {todolists.map((tl) => {
-          debugger;
-
           return (
             <Grid item key={tl.id}>
               <Paper style={{ padding: "10px" }}>

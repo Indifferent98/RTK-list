@@ -6,16 +6,17 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { setTodolists, tasksThunks } from "./tasks-reducer";
 import { createAppAsyncThunk, thunkTryCatch } from "common/utils";
 import { AppDispatch } from "app/store";
+import { useAppDispatch } from "common/hooks/useAppDispatch";
 
 const fetchTodolistsTC = createAppAsyncThunk<{ todolists: TodolistType[] }, undefined>(
   "/todolists/fetchTodolistsTC",
   async (undefined, thunkAPI) => {
     const { dispatch } = thunkAPI;
-    debugger;
+
     return thunkTryCatch(thunkAPI, async () => {
       const res = await todolistsAPI.getTodolists();
-      dispatch(setTodolists({ todolists: res.data }));
-      dispatch(setAppStatus({ status: "succeeded" }));
+      // dispatch(setTodolists({ todolists: res.data }));
+      if (res.data) dispatch(setAppStatus({ status: "succeeded" }));
       return { todolists: res.data };
       //Подумать над fetchtasks в экстраредьюсере, но надо проавильно изменить стейт, без return
     });
@@ -82,13 +83,13 @@ const slice = createSlice({
   },
   extraReducers(builder) {
     builder.addCase(fetchTodolistsTC.fulfilled, (state, action) => {
-      const todolistsForSet: TodolistDomainType[] = action.payload.todolists.map((t) => ({
-        ...t,
-        filter: "all",
-        entityStatus: "idle",
-      }));
-
-      return todolistsForSet;
+      action.payload.todolists.forEach((t) =>
+        state.push({
+          ...t,
+          filter: "all",
+          entityStatus: "idle",
+        } as TodolistDomainType),
+      );
     });
   },
 });

@@ -110,9 +110,6 @@ const slice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(fetchTasksTC.fulfilled, (state, action) => {
-        debugger;
-        state[action.payload.todolistId] = [];
-
         state[action.payload.todolistId] = action.payload.tasks;
       })
       .addCase(updateTaskTC.fulfilled, (state, action) => {

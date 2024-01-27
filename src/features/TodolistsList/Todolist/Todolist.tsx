@@ -1,14 +1,14 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect } from "react";
 import { AddItemForm } from "common/components/AddItemForm/AddItemForm";
 import { EditableSpan } from "common/components/EditableSpan/EditableSpan";
 import { Task } from "./Task/Task";
 import { TaskType } from "common/api/todolists-api";
-
 import { Button, IconButton } from "@mui/material";
 import { Delete } from "@mui/icons-material";
-
 import { TodolistDomainType, FilterValuesType } from "../todolists-reducer";
 import { TaskStatuses } from "common/enum";
+import { useAppDispatch } from "common/hooks/useAppDispatch";
+import { tasksThunks } from "../tasks-reducer";
 
 type PropsType = {
   todolist: TodolistDomainType;
@@ -24,6 +24,12 @@ type PropsType = {
 };
 
 export const Todolist = React.memo(function ({ demo = false, ...props }: PropsType) {
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(tasksThunks.fetchTasksTC(props.todolist.id));
+  }, []);
+
   const addTask = useCallback(
     (title: string) => {
       props.addTask(title, props.todolist.id);
@@ -73,16 +79,20 @@ export const Todolist = React.memo(function ({ demo = false, ...props }: PropsTy
       </h3>
       <AddItemForm addItem={addTask} disabled={props.todolist.entityStatus === "loading"} />
       <div>
-        {tasksForTodolist.map((t) => (
-          <Task
-            key={t.id}
-            task={t}
-            todolistId={props.todolist.id}
-            removeTask={props.removeTask}
-            changeTaskTitle={props.changeTaskTitle}
-            changeTaskStatus={props.changeTaskStatus}
-          />
-        ))}
+        {tasksForTodolist
+          ? tasksForTodolist.map((t) => {
+              return (
+                <Task
+                  key={t.id}
+                  task={t}
+                  todolistId={props.todolist.id}
+                  removeTask={props.removeTask}
+                  changeTaskTitle={props.changeTaskTitle}
+                  changeTaskStatus={props.changeTaskStatus}
+                />
+              );
+            })
+          : ""}
       </div>
       <div style={{ paddingTop: "10px" }}>
         <Button
