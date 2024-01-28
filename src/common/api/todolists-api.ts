@@ -39,24 +39,14 @@ export type TodolistType = {
 
 export type TaskType = {
   description: string;
-  title: string;
   status: TaskStatuses;
   priority: TaskPriorities;
   startDate: string;
   deadline: string;
-  id: string;
   todoListId: string;
-  order: number;
-  addedDate: string;
-};
-export type UpdateTaskModelType = {
-  title: string;
-  description: string;
-  status: TaskStatuses;
-  priority: TaskPriorities;
-  startDate: string;
-  deadline: string;
-};
+} & TodolistType;
+
+export type UpdateTaskModelType = Omit<TaskType, "id" | "addedDate" | "order" | "todoListId">;
 type GetTasksResponse = {
   error: string | null;
   totalCount: number;

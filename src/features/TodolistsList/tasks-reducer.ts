@@ -67,7 +67,7 @@ const updateTaskTC = createAppAsyncThunk<ArgUpdateTaskType, ArgUpdateTaskType>(
         return { model: arg.model, taskId: arg.taskId, todolistId: arg.todolistId };
       } else {
         handleServerAppError(res.data, dispatch);
-        return {} as ArgUpdateTaskType;
+        return rejectWithValue(null);
       }
     });
   },
@@ -130,17 +130,8 @@ const slice = createSlice({
   },
 });
 
-export type UpdateDomainTaskModelType = {
-  title?: string;
-  description?: string;
-  status?: TaskStatuses;
-  priority?: TaskPriorities;
-  startDate?: string;
-  deadline?: string;
-};
-export type TasksStateType = {
-  [key: string]: Array<TaskType>;
-};
+export type UpdateDomainTaskModelType = Partial<UpdateTaskModelType>;
+export type TasksStateType = Record<string, TaskType[]>;
 
 export const { clearTasksData } = slice.actions;
 export const tasksReducer = slice.reducer;
