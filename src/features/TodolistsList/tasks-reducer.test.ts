@@ -1,6 +1,6 @@
 import { TaskType } from "common/api/todolists-api";
 import { tasksReducer, TasksStateType, tasksThunks, UpdateDomainTaskModelType } from "./tasks-reducer";
-import { todolistThunks } from "./todolists-reducer";
+import { todolistsThunks } from "./todolists-reducer";
 import { v1 } from "uuid";
 import { TaskStatuses, TaskPriorities } from "common/enum";
 
@@ -161,7 +161,7 @@ test("title of specified task should be changed", () => {
   expect(endState["todolistId2"][0].title).toBe("bread");
 });
 test("new array should be added when new todolist is added", () => {
-  const action = todolistThunks.addTodolistTC.fulfilled(
+  const action = todolistsThunks.addTodolistTC.fulfilled(
     {
       todolist: {
         id: "blabla",
@@ -186,7 +186,7 @@ test("new array should be added when new todolist is added", () => {
   expect(endState[newKey]).toEqual([]);
 });
 test("propertry with todolistId should be deleted", () => {
-  const action = todolistThunks.removeTodolistTC.fulfilled({ todolistId: "todolistId2" }, "requiredId", "121212");
+  const action = todolistsThunks.removeTodolistTC.fulfilled({ todolistId: "todolistId2" }, "requiredId", "121212");
 
   const endState = tasksReducer(startState, action);
 

@@ -1,23 +1,21 @@
 import React from "react";
 import { useFormik } from "formik";
 import { useSelector } from "react-redux";
-
 import { Navigate } from "react-router-dom";
-import { useAppDispatch } from "common/hooks/useAppDispatch";
 import { Button, Checkbox, FormControl, FormControlLabel, FormGroup, FormLabel, Grid, TextField } from "@mui/material";
 import { selectIsLoggedIn } from "../auth-selectors";
 import { authThunks } from "../auth-reducer";
+import { useActions } from "common/hooks";
 
 export const Login = () => {
   const isLoggedIn = useSelector(selectIsLoggedIn);
-
+  const { LoginTC } = useActions(authThunks);
   type formikErrorsType = {
     email?: string;
     password?: string;
     rememberMe?: string;
   };
 
-  const dispatch = useAppDispatch();
   const formik = useFormik({
     initialValues: {
       password: "",
@@ -40,10 +38,11 @@ export const Login = () => {
     },
 
     onSubmit: (values) => {
-      dispatch(authThunks.LoginTC(values));
-      formik.resetForm();
+      LoginTC(values);
+      // formik.resetForm();
     },
   });
+
   const buttonDisableCondition =
     formik.errors.email ||
     formik.errors.password ||
@@ -52,6 +51,7 @@ export const Login = () => {
     !formik.values.password.length
       ? true
       : false;
+
   if (isLoggedIn) {
     return <Navigate to={"/"} />;
   }

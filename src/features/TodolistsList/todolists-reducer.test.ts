@@ -1,10 +1,9 @@
 import {
-  changeTodolistEntityStatus,
-  changeTodolistFilter,
   FilterValuesType,
   TodolistDomainType,
+  todolistsActions,
   todolistsReducer,
-  todolistThunks,
+  todolistsThunks,
 } from "./todolists-reducer";
 import { v1 } from "uuid";
 import { TodolistType } from "common/api/todolists-api";
@@ -26,7 +25,7 @@ beforeEach(() => {
 test("correct todolist should be removed", () => {
   const endState = todolistsReducer(
     startState,
-    todolistThunks.removeTodolistTC.fulfilled({ todolistId: todolistId1 }, "requiredId", "1212"),
+    todolistsThunks.removeTodolistTC.fulfilled({ todolistId: todolistId1 }, "requiredId", "1212"),
   );
 
   expect(endState.length).toBe(1);
@@ -43,7 +42,7 @@ test("correct todolist should be added", () => {
 
   const endState = todolistsReducer(
     startState,
-    todolistThunks.addTodolistTC.fulfilled({ todolist }, "requiredId", "12312"),
+    todolistsThunks.addTodolistTC.fulfilled({ todolist }, "requiredId", "12312"),
   );
 
   expect(endState.length).toBe(3);
@@ -56,7 +55,7 @@ test("correct todolist should change its name", () => {
 
   const endState = todolistsReducer(
     startState,
-    todolistThunks.changeTodolistTitleTC.fulfilled({ title: newTodolistTitle, todolistId: todolistId2 }, "reiredId", {
+    todolistsThunks.changeTodolistTitleTC.fulfilled({ title: newTodolistTitle, todolistId: todolistId2 }, "reiredId", {
       title: newTodolistTitle,
       todolistId: todolistId2,
     }),
@@ -69,7 +68,10 @@ test("correct todolist should change its name", () => {
 test("correct filter of todolist should be changed", () => {
   let newFilter: FilterValuesType = "completed";
 
-  const endState = todolistsReducer(startState, changeTodolistFilter({ filter: newFilter, todolistId: todolistId2 }));
+  const endState = todolistsReducer(
+    startState,
+    todolistsActions.changeTodolistFilter({ filter: newFilter, todolistId: todolistId2 }),
+  );
 
   expect(endState[0].filter).toBe("all");
   expect(endState[1].filter).toBe(newFilter);
@@ -77,7 +79,7 @@ test("correct filter of todolist should be changed", () => {
 test("todolists should be added", () => {
   const endState = todolistsReducer(
     [],
-    todolistThunks.fetchTodolistsTC.fulfilled({ todolists: startState }, "requiredId", undefined),
+    todolistsThunks.fetchTodolistsTC.fulfilled({ todolists: startState }, "requiredId", undefined),
   );
 
   expect(endState.length).toBe(2);
@@ -87,7 +89,7 @@ test("correct entity status of todolist should be changed", () => {
 
   const endState = todolistsReducer(
     startState,
-    changeTodolistEntityStatus({ status: newStatus, todolistId: todolistId2 }),
+    todolistsActions.changeTodolistEntityStatus({ status: newStatus, todolistId: todolistId2 }),
   );
 
   expect(endState[0].entityStatus).toBe("idle");

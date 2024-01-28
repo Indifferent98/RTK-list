@@ -30,7 +30,7 @@ const removeTodolistTC = createAppAsyncThunk<{ todolistId: string }, string>(
     return thunkTryCatch(thunkAPI, async () => {
       const res = await todolistsAPI.deleteTodolist(todolistId);
       if (res.data.resultCode === ResponseResultCode.success) {
-        dispatch(changeTodolistEntityStatus({ todolistId, status: "loading" }));
+        dispatch(todolistsActions.changeTodolistEntityStatus({ todolistId, status: "loading" }));
         return { todolistId };
       } else {
         handleServerAppError(res.data, dispatch);
@@ -124,7 +124,7 @@ const slice = createSlice({
 });
 
 export const todolistsReducer = slice.reducer;
-export const { changeTodolistEntityStatus, changeTodolistFilter, clearTodosData } = slice.actions;
+export const todolistsActions = slice.actions;
 
 export type FilterValuesType = "all" | "active" | "completed";
 export type TodolistDomainType = TodolistType & {
@@ -132,4 +132,4 @@ export type TodolistDomainType = TodolistType & {
   entityStatus: RequestStatusType;
 };
 
-export const todolistThunks = { fetchTodolistsTC, removeTodolistTC, addTodolistTC, changeTodolistTitleTC };
+export const todolistsThunks = { fetchTodolistsTC, removeTodolistTC, addTodolistTC, changeTodolistTitleTC };

@@ -1,9 +1,8 @@
+import { todolistsActions } from "./../TodolistsList/todolists-reducer";
 import { setAppInitialized, setAppStatus } from "app/app-reducer";
-
 import { createSlice } from "@reduxjs/toolkit";
 import { clearTasksData } from "features/TodolistsList/tasks-reducer";
-import { clearTodosData } from "features/TodolistsList/todolists-reducer";
-import { createAppAsyncThunk, handleServerAppError, handleServerNetworkError, thunkTryCatch } from "common/utils";
+import { createAppAsyncThunk, handleServerAppError, thunkTryCatch } from "common/utils";
 import { authAPI, LoginParamsType } from "common/api/auth-api";
 import { ResponseResultCode } from "common/enum";
 
@@ -34,7 +33,7 @@ export const LogOutTC = createAppAsyncThunk<{ isLoggedIn: boolean }, undefined>(
       const res = await authAPI.logout();
       if (res.data.resultCode === ResponseResultCode.success) {
         dispatch(clearTasksData());
-        dispatch(clearTodosData());
+        dispatch(todolistsActions.clearTodosData());
         dispatch(setAppStatus({ status: "succeeded" }));
         return { isLoggedIn: false };
       } else {

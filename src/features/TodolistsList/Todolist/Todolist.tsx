@@ -6,9 +6,9 @@ import { Button, IconButton } from "@mui/material";
 import { Delete } from "@mui/icons-material";
 import { TodolistDomainType, FilterValuesType } from "../todolists-reducer";
 import { TaskStatuses } from "common/enum";
-import { useAppDispatch } from "common/hooks/useAppDispatch";
 import { tasksThunks } from "../tasks-reducer";
 import { AddItemForm } from "common/components/AddItemForm";
+import { useActions } from "common/hooks";
 
 type PropsType = {
   todolist: TodolistDomainType;
@@ -24,10 +24,9 @@ type PropsType = {
 };
 
 export const Todolist = React.memo(function ({ demo = false, ...props }: PropsType) {
-  const dispatch = useAppDispatch();
-
+  const { fetchTasksTC } = useActions(tasksThunks);
   useEffect(() => {
-    dispatch(tasksThunks.fetchTasksTC(props.todolist.id));
+    fetchTasksTC(props.todolist.id);
   }, []);
 
   const addTask = useCallback(
