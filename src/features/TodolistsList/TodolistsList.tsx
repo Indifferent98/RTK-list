@@ -6,7 +6,7 @@ import { Grid, Paper } from "@mui/material";
 import { Todolist } from "./Todolist/Todolist";
 import { Navigate } from "react-router-dom";
 import { useAppDispatch } from "common/hooks/useAppDispatch";
-import { selectIsLoggedIn } from "features/Auth/auth-selectors";
+import { selectIsLoggedIn } from "features/Auth/api/auth-selectors";
 import { TaskStatuses } from "common/enum";
 import { selectTasks, selectTodolists } from "features/todolists-task-selector";
 import { AddItemForm } from "common/components/AddItemForm";

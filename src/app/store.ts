@@ -2,7 +2,7 @@ import { tasksReducer } from "features/TodolistsList/tasks-reducer";
 import { todolistsReducer } from "features/TodolistsList/todolists-reducer";
 import { appReducer } from "./app-reducer";
 import { configureStore } from "@reduxjs/toolkit";
-import { authReducer } from "features/Auth/auth-reducer";
+import { authReducer } from "features/Auth/api/auth-reducer";
 
 export const store = configureStore({
   reducer: {

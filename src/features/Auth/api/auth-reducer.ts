@@ -1,4 +1,4 @@
-import { todolistsActions } from "./../TodolistsList/todolists-reducer";
+import { todolistsActions } from "../../TodolistsList/todolists-reducer";
 import { setAppInitialized, setAppStatus } from "app/app-reducer";
 import { createSlice } from "@reduxjs/toolkit";
 import { clearTasksData } from "features/TodolistsList/tasks-reducer";
@@ -6,27 +6,24 @@ import { createAppAsyncThunk, handleServerAppError, thunkTryCatch } from "common
 import { authAPI, LoginParamsType } from "common/api/auth-api";
 import { ResponseResultCode } from "common/enum";
 
-export const LoginTC = createAppAsyncThunk<{ isLoggedIn: boolean }, LoginParamsType>(
-  "/auth/Login",
-  async (data, thunkAPI) => {
-    const { dispatch, rejectWithValue } = thunkAPI;
+const LoginTC = createAppAsyncThunk<{ isLoggedIn: boolean }, LoginParamsType>("/auth/Login", async (data, thunkAPI) => {
+  const { dispatch, rejectWithValue } = thunkAPI;
 
-    return thunkTryCatch(thunkAPI, async () => {
-      const res = await authAPI.login(data);
-      if (res.data.resultCode === ResponseResultCode.success) {
-        dispatch(setAppStatus({ status: "succeeded" }));
-        return { isLoggedIn: true };
-      } else {
-        handleServerAppError(res.data, dispatch);
-        return rejectWithValue(null);
-      }
-    });
-  },
-);
+  return thunkTryCatch(thunkAPI, async () => {
+    const res = await authAPI.login(data);
+    if (res.data.resultCode === ResponseResultCode.success) {
+      dispatch(setAppStatus({ status: "succeeded" }));
+      return { isLoggedIn: true };
+    } else {
+      handleServerAppError(res.data, dispatch);
+      return rejectWithValue(null);
+    }
+  });
+});
 
-export const LogOutTC = createAppAsyncThunk<{ isLoggedIn: boolean }, undefined>(
+const LogOutTC = createAppAsyncThunk<{ isLoggedIn: boolean }, undefined>(
   "auth/LogOut",
-  async (undefined, thunkAPI) => {
+  async (_undefined, thunkAPI) => {
     const { dispatch, rejectWithValue } = thunkAPI;
 
     return thunkTryCatch(thunkAPI, async () => {
@@ -46,7 +43,7 @@ export const LogOutTC = createAppAsyncThunk<{ isLoggedIn: boolean }, undefined>(
 
 const initializeAppTC = createAppAsyncThunk<{ isLoggedIn: boolean }, undefined>(
   "app/initializeAppTC",
-  async (undefined, thunkAPI) => {
+  async (_undefined, thunkAPI) => {
     const { dispatch, rejectWithValue } = thunkAPI;
     return thunkTryCatch(thunkAPI, async () => {
       const res = await authAPI.me();

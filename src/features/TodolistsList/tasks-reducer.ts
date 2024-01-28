@@ -4,8 +4,8 @@ import { setAppStatus } from "app/app-reducer";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { createAppAsyncThunk } from "common/utils/createAppAsyncThunk";
 import { handleServerAppError, thunkTryCatch } from "common/utils";
-import { ResponseResultCode, TaskPriorities, TaskStatuses } from "common/enum";
-import { BaseResponseType } from "common/types/types";
+import { ResponseResultCode } from "common/enum";
+import { BaseResponseType } from "common/types";
 
 const fetchTasksTC = createAppAsyncThunk<{ tasks: TaskType[]; todolistId: string }, string>(
   "/tasks/fetchTasks",

@@ -1,7 +1,7 @@
 import { setAppError, setAppStatus } from "app/app-reducer";
 import { AppDispatch } from "app/store";
 
-import { BaseResponseType } from "common/types/types";
+import { BaseResponseType } from "common/types";
 
 /**
  * Обработка ошибок с сервера.

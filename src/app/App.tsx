@@ -16,8 +16,8 @@ import {
 } from "@mui/material";
 import { Menu } from "@mui/icons-material";
 import { selectIsInitialized, selectStatus } from "./app-selectors";
-import { selectIsLoggedIn } from "features/Auth/auth-selectors";
-import { authThunks } from "features/Auth/auth-reducer";
+import { selectIsLoggedIn } from "features/Auth/api/auth-selectors";
+import { authThunks } from "features/Auth/api/auth-reducer";
 import { Login } from "features/Auth/Login";
 import { useActions } from "common/hooks";
 
@@ -59,7 +59,8 @@ function App({ demo = false }: PropsType) {
     <BrowserRouter>
       <div className="App">
         <ErrorSnackbar />
-        <AppBar position="static">
+
+        <AppBar style={{ border: "1px solid black", position: "relative", zIndex: 1 }} position="relative">
           <Toolbar>
             <IconButton edge="start" color="inherit" aria-label="menu">
               <Menu />
@@ -73,6 +74,7 @@ function App({ demo = false }: PropsType) {
           </Toolbar>
           {status === "loading" && <LinearProgress />}
         </AppBar>
+
         <Container fixed>
           <Routes>
             <Route path={"/"} element={<TodolistsList demo={demo} />} />
