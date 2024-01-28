@@ -44,7 +44,6 @@ const addTodolistTC = createAppAsyncThunk<{ todolist: TodolistType }, string>(
   "/todolists/addTodolistTC",
   async (title, thunkAPI) => {
     const { dispatch, rejectWithValue } = thunkAPI;
-    debugger;
     return thunkTryCatch(thunkAPI, async () => {
       const res = await todolistsAPI.createTodolist(title);
       if (res.data.data.item) {

@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect } from "react";
-import { AddItemForm } from "common/components/AddItemForm/AddItemForm";
 import { EditableSpan } from "common/components/EditableSpan/EditableSpan";
 import { Task } from "./Task/Task";
 import { TaskType } from "common/api/todolists-api";
@@ -9,6 +8,7 @@ import { TodolistDomainType, FilterValuesType } from "../todolists-reducer";
 import { TaskStatuses } from "common/enum";
 import { useAppDispatch } from "common/hooks/useAppDispatch";
 import { tasksThunks } from "../tasks-reducer";
+import { AddItemForm } from "common/components/AddItemForm";
 
 type PropsType = {
   todolist: TodolistDomainType;

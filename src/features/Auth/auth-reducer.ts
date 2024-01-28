@@ -3,7 +3,7 @@ import { setAppInitialized, setAppStatus } from "app/app-reducer";
 import { createSlice } from "@reduxjs/toolkit";
 import { clearTasksData } from "features/TodolistsList/tasks-reducer";
 import { clearTodosData } from "features/TodolistsList/todolists-reducer";
-import { createAppAsyncThunk, handleServerAppError, handleServerNetworkError } from "common/utils";
+import { createAppAsyncThunk, handleServerAppError, handleServerNetworkError, thunkTryCatch } from "common/utils";
 import { authAPI, LoginParamsType } from "common/api/auth-api";
 import { ResponseResultCode } from "common/enum";
 
@@ -11,8 +11,8 @@ export const LoginTC = createAppAsyncThunk<{ isLoggedIn: boolean }, LoginParamsT
   "/auth/Login",
   async (data, thunkAPI) => {
     const { dispatch, rejectWithValue } = thunkAPI;
-    dispatch(setAppStatus({ status: "loading" }));
-    try {
+
+    return thunkTryCatch(thunkAPI, async () => {
       const res = await authAPI.login(data);
       if (res.data.resultCode === ResponseResultCode.success) {
         dispatch(setAppStatus({ status: "succeeded" }));
@@ -21,20 +21,17 @@ export const LoginTC = createAppAsyncThunk<{ isLoggedIn: boolean }, LoginParamsT
         handleServerAppError(res.data, dispatch);
         return rejectWithValue(null);
       }
-    } catch (error) {
-      handleServerNetworkError(error, dispatch);
-      return rejectWithValue(null);
-    }
+    });
   },
 );
+
 export const LogOutTC = createAppAsyncThunk<{ isLoggedIn: boolean }, undefined>(
   "auth/LogOut",
   async (undefined, thunkAPI) => {
     const { dispatch, rejectWithValue } = thunkAPI;
-    try {
-      dispatch(setAppStatus({ status: "loading" }));
-      const res = await authAPI.logout();
 
+    return thunkTryCatch(thunkAPI, async () => {
+      const res = await authAPI.logout();
       if (res.data.resultCode === ResponseResultCode.success) {
         dispatch(clearTasksData());
         dispatch(clearTodosData());
@@ -44,10 +41,7 @@ export const LogOutTC = createAppAsyncThunk<{ isLoggedIn: boolean }, undefined>(
         handleServerAppError(res.data, dispatch);
         return rejectWithValue(null);
       }
-    } catch (error) {
-      handleServerNetworkError(error, dispatch);
-      return rejectWithValue(null);
-    }
+    });
   },
 );
 
@@ -55,8 +49,7 @@ const initializeAppTC = createAppAsyncThunk<{ isLoggedIn: boolean }, undefined>(
   "app/initializeAppTC",
   async (undefined, thunkAPI) => {
     const { dispatch, rejectWithValue } = thunkAPI;
-    try {
-      dispatch(setAppStatus({ status: "loading" }));
+    return thunkTryCatch(thunkAPI, async () => {
       const res = await authAPI.me();
       if (res.data.resultCode === ResponseResultCode.success) {
         dispatch(
@@ -71,15 +64,12 @@ const initializeAppTC = createAppAsyncThunk<{ isLoggedIn: boolean }, undefined>(
         return { isLoggedIn: true };
       } else {
         // handleServerAppError(res.data, dispatch);
-        dispatch(setAppStatus({ status: "failed" }));
+        // dispatch(setAppStatus({ status: "failed" }));
         return rejectWithValue(null);
       }
-    } catch (error) {
-      handleServerNetworkError(error, dispatch);
-      return rejectWithValue(null);
-    } finally {
+    }).finally(() => {
       dispatch(setAppInitialized({ isInitialized: true }));
-    }
+    });
   },
 );
 

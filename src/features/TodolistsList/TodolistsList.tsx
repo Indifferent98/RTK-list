@@ -3,13 +3,13 @@ import { useSelector } from "react-redux";
 import { changeTodolistFilter, FilterValuesType, todolistThunks } from "./todolists-reducer";
 import { tasksThunks } from "./tasks-reducer";
 import { Grid, Paper } from "@mui/material";
-import { AddItemForm } from "common/components/AddItemForm/AddItemForm";
 import { Todolist } from "./Todolist/Todolist";
 import { Navigate } from "react-router-dom";
 import { useAppDispatch } from "common/hooks/useAppDispatch";
 import { selectIsLoggedIn } from "features/Auth/auth-selectors";
 import { TaskStatuses } from "common/enum";
 import { selectTasks, selectTodolists } from "features/todolists-task-selector";
+import { AddItemForm } from "common/components/AddItemForm";
 
 type PropsType = {
   demo?: boolean;
@@ -30,8 +30,7 @@ export const TodolistsList: React.FC<PropsType> = ({ demo = false }) => {
   const tasks = useSelector(selectTasks);
   const removeTask = useCallback(
     function (id: string, todolistId: string) {
-      const thunk = tasksThunks.removeTaskTC({ taskId: id, todolistId });
-      dispatch(thunk);
+      dispatch(tasksThunks.removeTaskTC({ taskId: id, todolistId }));
     },
     [dispatch],
   );
@@ -74,8 +73,7 @@ export const TodolistsList: React.FC<PropsType> = ({ demo = false }) => {
 
   const changeTodolistTitle = useCallback(
     function (todolistId: string, title: string) {
-      const thunk = todolistThunks.changeTodolistTitleTC({ title, todolistId });
-      dispatch(thunk);
+      dispatch(todolistThunks.changeTodolistTitleTC({ title, todolistId }));
     },
     [dispatch],
   );
