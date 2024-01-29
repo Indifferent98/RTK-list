@@ -1,7 +1,7 @@
-import { todolistsActions } from "../TodolistsList/todolistsReducer";
-import { setAppInitialized, setAppStatus } from "app/app-reducer";
+import { todolistsActions } from "../../TodolistsList/model/todolists/todolistsSlice";
+import { setAppInitialized, setAppStatus } from "app/appSlice";
 import { createSlice } from "@reduxjs/toolkit";
-import { clearTasksData } from "features/TodolistsList/tasksReducer";
+import { clearTasksData } from "features/TodolistsList/model/tasks/tasksSlice";
 import { createAppAsyncThunk, handleServerAppError, thunkTryCatch } from "common/utils";
 import { authAPI, LoginParamsType } from "features/Auth/api/authApi";
 import { ResponseResultCode } from "common/enum";

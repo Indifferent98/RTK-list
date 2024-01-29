@@ -15,9 +15,9 @@ import {
   Typography,
 } from "@mui/material";
 import { Menu } from "@mui/icons-material";
-import { selectIsInitialized, selectStatus } from "./app-selectors";
-import { selectIsLoggedIn } from "features/Auth/api/authSelectors";
-import { authThunks } from "features/Auth/authReducer";
+import { selectIsInitialized, selectStatus } from "./appSelectors";
+import { selectIsLoggedIn } from "features/Auth/model/authSelectors";
+import { authThunks } from "features/Auth/model/authSlice";
 import { Login } from "features/Auth/Login";
 import { useActions } from "common/hooks";
 

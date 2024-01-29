@@ -1,4 +1,4 @@
-import { setAppError, setAppStatus } from "app/app-reducer";
+import { setAppError, setAppStatus } from "app/appSlice";
 import { AppDispatch } from "app/store";
 import { isAxiosError } from "axios";
 import React from "react";

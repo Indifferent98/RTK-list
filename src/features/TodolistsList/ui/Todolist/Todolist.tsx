@@ -4,60 +4,47 @@ import { Task } from "./Task/Task";
 import { TaskType } from "features/TodolistsList/api/todolistsApi";
 import { Button, IconButton } from "@mui/material";
 import { Delete } from "@mui/icons-material";
-import { TodolistDomainType, FilterValuesType } from "../../todolistsReducer";
+import { TodolistDomainType, todolistsThunks, todolistsActions } from "../../model/todolists/todolistsSlice";
 import { TaskStatuses } from "common/enum";
-import { tasksThunks } from "../../tasksReducer";
+import { tasksThunks } from "../../model/tasks/tasksSlice";
 import { AddItemForm } from "common/components/AddItemForm";
 import { useActions } from "common/hooks";
 
 type PropsType = {
   todolist: TodolistDomainType;
   tasks: Array<TaskType>;
-  changeFilter: (value: FilterValuesType, todolistId: string) => void;
-  addTask: (title: string, todolistId: string) => void;
-  changeTaskStatus: (id: string, status: TaskStatuses, todolistId: string) => void;
-  changeTaskTitle: (taskId: string, newTitle: string, todolistId: string) => void;
-  removeTask: (taskId: string, todolistId: string) => void;
-  removeTodolist: (id: string) => void;
-  changeTodolistTitle: (id: string, newTitle: string) => void;
   demo?: boolean;
 };
 
 export const Todolist = React.memo(function ({ demo = false, ...props }: PropsType) {
-  const { fetchTasksTC } = useActions(tasksThunks);
+  const { removeTodolistTC, changeTodolistTitleTC } = useActions(todolistsThunks);
+  const { fetchTasksTC, addTaskTC } = useActions(tasksThunks);
+  const { changeTodolistFilter } = useActions(todolistsActions);
+
   useEffect(() => {
     fetchTasksTC(props.todolist.id);
   }, []);
 
   const addTask = useCallback(
     (title: string) => {
-      props.addTask(title, props.todolist.id);
+      addTaskTC({ title, todolistId: props.todolist.id });
     },
-    [props.addTask, props.todolist.id],
+    [addTaskTC, props.todolist.id],
   );
 
   const removeTodolist = () => {
-    props.removeTodolist(props.todolist.id);
+    removeTodolistTC(props.todolist.id);
   };
   const changeTodolistTitle = useCallback(
     (title: string) => {
-      props.changeTodolistTitle(props.todolist.id, title);
+      changeTodolistTitleTC({ todolistId: props.todolist.id, title });
     },
-    [props.todolist.id, props.changeTodolistTitle],
+    [props.todolist.id, changeTodolistTitleTC],
   );
 
-  const onAllClickHandler = useCallback(
-    () => props.changeFilter("all", props.todolist.id),
-    [props.todolist.id, props.changeFilter],
-  );
-  const onActiveClickHandler = useCallback(
-    () => props.changeFilter("active", props.todolist.id),
-    [props.todolist.id, props.changeFilter],
-  );
-  const onCompletedClickHandler = useCallback(
-    () => props.changeFilter("completed", props.todolist.id),
-    [props.todolist.id, props.changeFilter],
-  );
+  const onAllClickHandler = () => changeTodolistFilter({ filter: "all", todolistId: props.todolist.id });
+  const onActiveClickHandler = () => changeTodolistFilter({ filter: "active", todolistId: props.todolist.id });
+  const onCompletedClickHandler = () => changeTodolistFilter({ filter: "completed", todolistId: props.todolist.id });
 
   let tasksForTodolist = props.tasks;
 
@@ -78,20 +65,10 @@ export const Todolist = React.memo(function ({ demo = false, ...props }: PropsTy
       </h3>
       <AddItemForm addItem={addTask} disabled={props.todolist.entityStatus === "loading"} />
       <div>
-        {tasksForTodolist
-          ? tasksForTodolist.map((t) => {
-              return (
-                <Task
-                  key={t.id}
-                  task={t}
-                  todolistId={props.todolist.id}
-                  removeTask={props.removeTask}
-                  changeTaskTitle={props.changeTaskTitle}
-                  changeTaskStatus={props.changeTaskStatus}
-                />
-              );
-            })
-          : ""}
+        {tasksForTodolist &&
+          tasksForTodolist.map((t) => {
+            return <Task key={t.id} task={t} todolistId={props.todolist.id} />;
+          })}
       </div>
       <div style={{ paddingTop: "10px" }}>
         <Button

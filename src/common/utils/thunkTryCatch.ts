@@ -1,7 +1,7 @@
 import { BaseThunkAPI } from "@reduxjs/toolkit/dist/createAsyncThunk";
 import { AppDispatch, AppRootStateType } from "app/store";
 import { handleServerNetworkError } from "./handleServerNetworkError";
-import { setAppStatus } from "app/app-reducer";
+import { setAppStatus } from "app/appSlice";
 
 //logic thunks wrapper
 

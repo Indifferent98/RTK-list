@@ -1,4 +1,4 @@
-import { setAppError, setAppStatus } from "app/app-reducer";
+import { setAppError, setAppStatus } from "app/appSlice";
 import { AppDispatch } from "app/store";
 
 import { BaseResponseType } from "common/types";

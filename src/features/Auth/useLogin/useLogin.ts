@@ -1,9 +1,8 @@
 import { useFormik } from "formik";
-import React from "react";
 
 import { LoginParamsType } from "features/Auth/api/authApi";
 import { useActions } from "common/hooks";
-import { authThunks } from "../authReducer";
+import { authThunks } from "../model/authSlice";
 
 type formikErrorsType = Partial<Omit<LoginParamsType, "captcha">>;
 export const useLogin = () => {
