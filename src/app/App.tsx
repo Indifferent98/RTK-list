@@ -21,13 +21,12 @@ import { authThunks } from "features/Auth/model/authSlice";
 import { Login } from "features/Auth/Login";
 import { useActions } from "common/hooks";
 
-type PropsType = {
+type Props = {
   demo?: boolean;
 };
 
-function App({ demo = false }: PropsType) {
+function App({ demo = false }: Props) {
   const { LogOutTC, initializeAppTC } = useActions(authThunks);
-
   const status = useSelector(selectStatus);
   const isInitialized = useSelector(selectIsInitialized);
   const isLoggedIn = useSelector(selectIsLoggedIn);
@@ -36,7 +35,7 @@ function App({ demo = false }: PropsType) {
     initializeAppTC();
   }, []);
 
-  const logoutHandler = useCallback(() => {
+  const logOut = useCallback(() => {
     LogOutTC();
   }, []);
 
@@ -59,7 +58,6 @@ function App({ demo = false }: PropsType) {
     <BrowserRouter>
       <div className="App">
         <ErrorSnackbar />
-
         <AppBar style={{ border: "1px solid black", position: "relative", zIndex: 1 }} position="relative">
           <Toolbar>
             <IconButton edge="start" color="inherit" aria-label="menu">
@@ -67,14 +65,13 @@ function App({ demo = false }: PropsType) {
             </IconButton>
             <Typography variant="h6">News</Typography>
             {isLoggedIn && (
-              <Button color="inherit" onClick={logoutHandler}>
+              <Button color="inherit" onClick={logOut}>
                 Log out
               </Button>
             )}
           </Toolbar>
           {status === "loading" && <LinearProgress />}
         </AppBar>
-
         <Container fixed>
           <Routes>
             <Route path={"/"} element={<TodolistsList demo={demo} />} />

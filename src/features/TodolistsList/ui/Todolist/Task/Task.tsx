@@ -7,16 +7,16 @@ import { TaskStatuses } from "common/enum";
 import { useActions } from "common/hooks";
 import { tasksThunks } from "features/TodolistsList/model/tasks/tasksSlice";
 
-type TaskPropsType = {
+type Props = {
   task: TaskType;
   todolistId: string;
 };
-export const Task = React.memo((props: TaskPropsType) => {
+export const Task = React.memo((props: Props) => {
   const { removeTaskTC, updateTaskTC } = useActions(tasksThunks);
 
-  const onClickHandler = () => removeTaskTC({ taskId: props.task.id, todolistId: props.todolistId });
+  const removeTask = () => removeTaskTC({ taskId: props.task.id, todolistId: props.todolistId });
 
-  const onChangeHandler = useCallback(
+  const updateTaskStatus = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
       let newIsDoneValue = e.currentTarget.checked;
       updateTaskTC({
@@ -28,7 +28,7 @@ export const Task = React.memo((props: TaskPropsType) => {
     [props.task.id, props.todolistId],
   );
 
-  const onTitleChangeHandler = useCallback(
+  const changeTaskTitle = useCallback(
     (newValue: string) => {
       updateTaskTC({ taskId: props.task.id, model: { title: newValue }, todolistId: props.todolistId });
     },
@@ -37,10 +37,10 @@ export const Task = React.memo((props: TaskPropsType) => {
 
   return (
     <div key={props.task.id} className={props.task.status === TaskStatuses.Completed ? "is-done" : ""}>
-      <Checkbox checked={props.task.status === TaskStatuses.Completed} color="primary" onChange={onChangeHandler} />
+      <Checkbox checked={props.task.status === TaskStatuses.Completed} color="primary" onChange={updateTaskStatus} />
 
-      <EditableSpan value={props.task.title} onChange={onTitleChangeHandler} />
-      <IconButton onClick={onClickHandler}>
+      <EditableSpan value={props.task.title} onChange={changeTaskTitle} />
+      <IconButton onClick={removeTask}>
         <Delete />
       </IconButton>
     </div>

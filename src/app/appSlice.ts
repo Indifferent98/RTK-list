@@ -1,15 +1,15 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
-export type RequestStatusType = "idle" | "loading" | "succeeded" | "failed";
+export type RequestStatus = "idle" | "loading" | "succeeded" | "failed";
 
 const slice = createSlice({
   name: "app",
-  initialState: { status: "idle" as RequestStatusType, error: null as string | null, isInitialized: false },
+  initialState: { status: "idle" as RequestStatus, error: null as string | null, isInitialized: false },
   reducers: {
     setAppError(state, action: PayloadAction<{ error: string | null }>) {
       state.error = action.payload.error;
     },
-    setAppStatus(state, action: PayloadAction<{ status: RequestStatusType }>) {
+    setAppStatus(state, action: PayloadAction<{ status: RequestStatus }>) {
       state.status = action.payload.status;
     },
     setAppInitialized(state, action: PayloadAction<{ isInitialized: boolean }>) {

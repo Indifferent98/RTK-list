@@ -10,11 +10,11 @@ import { AddItemForm } from "common/components/AddItemForm";
 import { useActions } from "common/hooks";
 import { selectTasks, selectTodolists } from "features/todolistsTaskSelector";
 
-type PropsType = {
+type Props = {
   demo?: boolean;
 };
 
-export const TodolistsList: React.FC<PropsType> = ({ demo = false }) => {
+export const TodolistsList: React.FC<Props> = ({ demo = false }) => {
   const { fetchTodolistsTC, addTodolistTC } = useActions(todolistsThunks);
 
   const dispatch = useAppDispatch();
@@ -26,7 +26,6 @@ export const TodolistsList: React.FC<PropsType> = ({ demo = false }) => {
   }, [dispatch]);
 
   const todolists = useSelector(selectTodolists);
-
   const isLoggedIn = useSelector(selectIsLoggedIn);
   const tasks = useSelector(selectTasks);
 

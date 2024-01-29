@@ -1,12 +1,12 @@
 import { BaseThunkAPI } from "@reduxjs/toolkit/dist/createAsyncThunk";
-import { AppDispatch, AppRootStateType } from "app/store";
+import { AppDispatch, AppRootState } from "app/store";
 import { handleServerNetworkError } from "./handleServerNetworkError";
 import { setAppStatus } from "app/appSlice";
 
 //logic thunks wrapper
 
 export const thunkTryCatch = async <T>(
-  thunkAPI: BaseThunkAPI<AppRootStateType, unknown, AppDispatch, null>,
+  thunkAPI: BaseThunkAPI<AppRootState, unknown, AppDispatch, null>,
   logic: () => Promise<T>,
 ) => {
   const { dispatch, rejectWithValue } = thunkAPI;

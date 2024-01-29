@@ -4,19 +4,23 @@ import { Task } from "./Task/Task";
 import { TaskType } from "features/TodolistsList/api/todolistsApi";
 import { Button, IconButton } from "@mui/material";
 import { Delete } from "@mui/icons-material";
-import { TodolistDomainType, todolistsThunks, todolistsActions } from "../../model/todolists/todolistsSlice";
 import { TaskStatuses } from "common/enum";
-import { tasksThunks } from "../../model/tasks/tasksSlice";
 import { AddItemForm } from "common/components/AddItemForm";
 import { useActions } from "common/hooks";
+import { tasksThunks } from "features/TodolistsList/model/tasks/tasksSlice";
+import {
+  TodolistDomain,
+  todolistsActions,
+  todolistsThunks,
+} from "features/TodolistsList/model/todolists/todolistsSlice";
 
-type PropsType = {
-  todolist: TodolistDomainType;
-  tasks: Array<TaskType>;
+type Props = {
+  todolist: TodolistDomain;
+  tasks: TaskType[];
   demo?: boolean;
 };
 
-export const Todolist = React.memo(function ({ demo = false, ...props }: PropsType) {
+export const Todolist = React.memo(function ({ demo = false, ...props }: Props) {
   const { removeTodolistTC, changeTodolistTitleTC } = useActions(todolistsThunks);
   const { fetchTasksTC, addTaskTC } = useActions(tasksThunks);
   const { changeTodolistFilter } = useActions(todolistsActions);
@@ -25,17 +29,17 @@ export const Todolist = React.memo(function ({ demo = false, ...props }: PropsTy
     fetchTasksTC(props.todolist.id);
   }, []);
 
-  const addTask = useCallback(
+  const addTaskHandler = useCallback(
     (title: string) => {
       addTaskTC({ title, todolistId: props.todolist.id });
     },
     [addTaskTC, props.todolist.id],
   );
 
-  const removeTodolist = () => {
+  const removeTodolistHandler = () => {
     removeTodolistTC(props.todolist.id);
   };
-  const changeTodolistTitle = useCallback(
+  const changeTodolistTitleHandler = useCallback(
     (title: string) => {
       changeTodolistTitleTC({ todolistId: props.todolist.id, title });
     },
@@ -58,12 +62,12 @@ export const Todolist = React.memo(function ({ demo = false, ...props }: PropsTy
   return (
     <div>
       <h3>
-        <EditableSpan value={props.todolist.title} onChange={changeTodolistTitle} />
-        <IconButton onClick={removeTodolist} disabled={props.todolist.entityStatus === "loading"}>
+        <EditableSpan value={props.todolist.title} onChange={changeTodolistTitleHandler} />
+        <IconButton onClick={removeTodolistHandler} disabled={props.todolist.entityStatus === "loading"}>
           <Delete />
         </IconButton>
       </h3>
-      <AddItemForm addItem={addTask} disabled={props.todolist.entityStatus === "loading"} />
+      <AddItemForm addItem={addTaskHandler} disabled={props.todolist.entityStatus === "loading"} />
       <div>
         {tasksForTodolist &&
           tasksForTodolist.map((t) => {

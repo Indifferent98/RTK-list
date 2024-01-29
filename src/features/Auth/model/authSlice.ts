@@ -3,10 +3,10 @@ import { setAppInitialized, setAppStatus } from "app/appSlice";
 import { createSlice } from "@reduxjs/toolkit";
 import { clearTasksData } from "features/TodolistsList/model/tasks/tasksSlice";
 import { createAppAsyncThunk, handleServerAppError, thunkTryCatch } from "common/utils";
-import { authAPI, LoginParamsType } from "features/Auth/api/authApi";
+import { authAPI, LoginParams } from "features/Auth/api/authApi";
 import { ResponseResultCode } from "common/enum";
 
-const LoginTC = createAppAsyncThunk<{ isLoggedIn: boolean }, LoginParamsType>("/auth/Login", async (data, thunkAPI) => {
+const LoginTC = createAppAsyncThunk<{ isLoggedIn: boolean }, LoginParams>("/auth/Login", async (data, thunkAPI) => {
   const { dispatch, rejectWithValue } = thunkAPI;
 
   return thunkTryCatch(thunkAPI, async () => {

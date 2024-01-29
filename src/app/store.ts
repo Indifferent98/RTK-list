@@ -13,7 +13,7 @@ export const store = configureStore({
   },
 });
 
-export type AppRootStateType = ReturnType<typeof store.getState>;
+export type AppRootState = ReturnType<typeof store.getState>;
 
 export type AppDispatch = typeof store.dispatch;
 

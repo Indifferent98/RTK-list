@@ -2,9 +2,9 @@ import { TaskStatuses, TaskPriorities } from "common/enum";
 import { TaskType } from "features/TodolistsList/api/todolistsApi";
 import { v1 } from "uuid";
 import { todolistsThunks } from "../../todolists/todolistsSlice";
-import { TasksStateType, tasksReducer, tasksThunks, UpdateDomainTaskModelType } from "../tasksSlice";
+import { TasksState, tasksReducer, tasksThunks, UpdateDomainTaskModel } from "../tasksSlice";
 
-let startState: TasksStateType = {};
+let startState: TasksState = {};
 beforeEach(() => {
   startState = {
     todolistId1: [
@@ -139,7 +139,7 @@ test("status of specified task should be changed", () => {
     tasksThunks.updateTaskTC.fulfilled(
       { taskId: "2", todolistId: "todolistId2", model: { status: TaskStatuses.New } },
       "requiredId",
-      { model: {} as UpdateDomainTaskModelType, taskId: "2", todolistId: "todolistId2" },
+      { model: {} as UpdateDomainTaskModel, taskId: "2", todolistId: "todolistId2" },
     ),
   );
 
@@ -152,7 +152,7 @@ test("title of specified task should be changed", () => {
     tasksThunks.updateTaskTC.fulfilled(
       { taskId: "2", todolistId: "todolistId2", model: { title: "yogurt" } },
       "requiredId",
-      { model: {} as UpdateDomainTaskModelType, taskId: "2", todolistId: "todolistId2" },
+      { model: {} as UpdateDomainTaskModel, taskId: "2", todolistId: "todolistId2" },
     ),
   );
 
@@ -216,7 +216,7 @@ test("propertry with todolistId should be deleted", () => {
 test("tasks should be added for todolist", () => {
   const todolistId3 = v1();
   const todolistId4 = v1();
-  const startTasks: TasksStateType = {
+  const startTasks: TasksState = {
     [todolistId4]: [],
     [todolistId3]: [],
   };

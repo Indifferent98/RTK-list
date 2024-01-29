@@ -1,6 +1,6 @@
-import { BaseResponseType } from "common/types";
+import { BaseResponse } from "common/types";
 import { instance } from "../../../common/api/baseApi";
-export type LoginParamsType = {
+export type LoginParams = {
   email: string;
   password: string;
   rememberMe: boolean;
@@ -8,13 +8,13 @@ export type LoginParamsType = {
 };
 
 export const authAPI = {
-  login(data: LoginParamsType) {
-    return instance.post<BaseResponseType<{ userId?: number }>>("auth/login", data);
+  login(data: LoginParams) {
+    return instance.post<BaseResponse<{ userId?: number }>>("auth/login", data);
   },
   logout() {
-    return instance.delete<BaseResponseType<{ userId?: number }>>("auth/login");
+    return instance.delete<BaseResponse<{ userId?: number }>>("auth/login");
   },
   me() {
-    return instance.get<BaseResponseType<{ id: number; email: string; login: string }>>("auth/me");
+    return instance.get<BaseResponse<{ id: number; email: string; login: string }>>("auth/me");
   },
 };
