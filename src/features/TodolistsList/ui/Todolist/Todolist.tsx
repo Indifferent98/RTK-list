@@ -1,12 +1,12 @@
 import React, { useCallback, useEffect } from "react";
 import { EditableSpan } from "common/components/EditableSpan/EditableSpan";
 import { Task } from "./Task/Task";
-import { TaskType } from "common/api/todolists-api";
+import { TaskType } from "features/TodolistsList/api/todolistsApi";
 import { Button, IconButton } from "@mui/material";
 import { Delete } from "@mui/icons-material";
-import { TodolistDomainType, FilterValuesType } from "../todolists-reducer";
+import { TodolistDomainType, FilterValuesType } from "../../todolistsReducer";
 import { TaskStatuses } from "common/enum";
-import { tasksThunks } from "../tasks-reducer";
+import { tasksThunks } from "../../tasksReducer";
 import { AddItemForm } from "common/components/AddItemForm";
 import { useActions } from "common/hooks";
 

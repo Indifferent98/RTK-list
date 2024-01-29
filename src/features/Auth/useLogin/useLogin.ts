@@ -1,9 +1,9 @@
 import { useFormik } from "formik";
 import React from "react";
 
-import { LoginParamsType } from "common/api/auth-api";
+import { LoginParamsType } from "features/Auth/api/authApi";
 import { useActions } from "common/hooks";
-import { authThunks } from "../api/auth-reducer";
+import { authThunks } from "../authReducer";
 
 type formikErrorsType = Partial<Omit<LoginParamsType, "captcha">>;
 export const useLogin = () => {
@@ -34,6 +34,14 @@ export const useLogin = () => {
       // formik.resetForm();
     },
   });
+  const buttonDisableCondition =
+    formik.errors.email ||
+    formik.errors.password ||
+    formik.errors.rememberMe ||
+    !formik.values.email.length ||
+    !formik.values.password.length
+      ? true
+      : false;
 
-  return { formik };
+  return { formik, buttonDisableCondition };
 };

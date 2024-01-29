@@ -1,5 +1,10 @@
-import { todolistsThunks } from "./todolists-reducer";
-import { ArgUpdateTaskType, TaskType, todolistsAPI, UpdateTaskModelType } from "common/api/todolists-api";
+import { todolistsThunks } from "./todolistsReducer";
+import {
+  ArgUpdateTaskType,
+  TaskType,
+  todolistsAPI,
+  UpdateTaskModelType,
+} from "features/TodolistsList/api/todolistsApi";
 import { setAppStatus } from "app/app-reducer";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { createAppAsyncThunk } from "common/utils/createAppAsyncThunk";

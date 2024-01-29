@@ -1,5 +1,5 @@
-import { UpdateDomainTaskModelType } from "features/TodolistsList/tasks-reducer";
-import { instance } from "./base-api";
+import { UpdateDomainTaskModelType } from "features/TodolistsList/tasksReducer";
+import { instance } from "../../../common/api/baseApi";
 import { TaskStatuses, TaskPriorities } from "common/enum";
 import { BaseResponseType } from "common/types";
 

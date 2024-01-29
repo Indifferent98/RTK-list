@@ -1,16 +1,17 @@
 import React, { useCallback, useEffect } from "react";
 import { useSelector } from "react-redux";
-import { FilterValuesType, todolistsActions, todolistsThunks } from "./todolists-reducer";
-import { tasksThunks } from "./tasks-reducer";
+import { FilterValuesType, todolistsActions, todolistsThunks } from "../todolistsReducer";
+import { tasksThunks } from "../tasksReducer";
 import { Grid, Paper } from "@mui/material";
 import { Todolist } from "./Todolist/Todolist";
 import { Navigate } from "react-router-dom";
 import { useAppDispatch } from "common/hooks/useAppDispatch";
-import { selectIsLoggedIn } from "features/Auth/api/auth-selectors";
+import { selectIsLoggedIn } from "features/Auth/api/authSelectors";
 import { TaskStatuses } from "common/enum";
-import { selectTasks, selectTodolists } from "features/todolists-task-selector";
+
 import { AddItemForm } from "common/components/AddItemForm";
 import { useActions } from "common/hooks";
+import { selectTasks, selectTodolists } from "features/todolistsTaskSelector";
 
 type PropsType = {
   demo?: boolean;

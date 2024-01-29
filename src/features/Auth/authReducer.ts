@@ -1,9 +1,9 @@
-import { todolistsActions } from "../../TodolistsList/todolists-reducer";
+import { todolistsActions } from "../TodolistsList/todolistsReducer";
 import { setAppInitialized, setAppStatus } from "app/app-reducer";
 import { createSlice } from "@reduxjs/toolkit";
-import { clearTasksData } from "features/TodolistsList/tasks-reducer";
+import { clearTasksData } from "features/TodolistsList/tasksReducer";
 import { createAppAsyncThunk, handleServerAppError, thunkTryCatch } from "common/utils";
-import { authAPI, LoginParamsType } from "common/api/auth-api";
+import { authAPI, LoginParamsType } from "features/Auth/api/authApi";
 import { ResponseResultCode } from "common/enum";
 
 const LoginTC = createAppAsyncThunk<{ isLoggedIn: boolean }, LoginParamsType>("/auth/Login", async (data, thunkAPI) => {
