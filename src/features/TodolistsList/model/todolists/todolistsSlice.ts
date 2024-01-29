@@ -1,10 +1,10 @@
-import { todolistsAPI, Todolist } from "features/TodolistsList/api/todolistsApi";
+import { todolistsAPI, TodolistType } from "features/TodolistsList/api/todolistsApi";
 import { RequestStatus, setAppStatus } from "app/appSlice";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { createAppAsyncThunk, handleServerAppError, thunkTryCatch } from "common/utils";
 import { ResponseResultCode } from "common/enum";
 
-const fetchTodolistsTC = createAppAsyncThunk<{ todolists: Todolist[] }, undefined>(
+const fetchTodolistsTC = createAppAsyncThunk<{ todolists: TodolistType[] }, undefined>(
   "/todolists/fetchTodolistsTC",
   async (undefined, thunkAPI) => {
     const { dispatch, rejectWithValue } = thunkAPI;
@@ -40,7 +40,7 @@ const removeTodolistTC = createAppAsyncThunk<{ todolistId: string }, string>(
   },
 );
 
-const addTodolistTC = createAppAsyncThunk<{ todolist: Todolist }, string>(
+const addTodolistTC = createAppAsyncThunk<{ todolist: TodolistType }, string>(
   "/todolists/addTodolistTC",
   async (title, thunkAPI) => {
     const { dispatch, rejectWithValue } = thunkAPI;
@@ -127,7 +127,7 @@ export const todolistsReducer = slice.reducer;
 export const todolistsActions = slice.actions;
 
 export type FilterValues = "all" | "active" | "completed";
-export type TodolistDomain = Todolist & {
+export type TodolistDomain = TodolistType & {
   filter: FilterValues;
   entityStatus: RequestStatus;
 };

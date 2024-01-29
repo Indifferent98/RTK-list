@@ -5,10 +5,10 @@ import { BaseResponse } from "common/types";
 
 export const todolistsAPI = {
   getTodolists() {
-    return instance.get<Todolist[]>("todo-lists");
+    return instance.get<TodolistType[]>("todo-lists");
   },
   createTodolist(title: string) {
-    return instance.post<BaseResponse<{ item: Todolist }>>("todo-lists", { title: title });
+    return instance.post<BaseResponse<{ item: TodolistType }>>("todo-lists", { title: title });
   },
   deleteTodolist(id: string) {
     return instance.delete<BaseResponse>(`todo-lists/${id}`);
@@ -30,7 +30,7 @@ export const todolistsAPI = {
   },
 };
 
-export type Todolist = {
+export type TodolistType = {
   id: string;
   title: string;
   addedDate: string;
@@ -44,7 +44,7 @@ export type TaskType = {
   startDate: string;
   deadline: string;
   todoListId: string;
-} & Todolist;
+} & TodolistType;
 
 export type UpdateTaskModel = Omit<TaskType, "id" | "addedDate" | "order" | "todoListId">;
 type GetTasksResponse = {

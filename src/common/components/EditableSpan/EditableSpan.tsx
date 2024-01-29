@@ -6,7 +6,7 @@ type Props = {
   onChange: (newValue: string) => void;
 };
 
-export const EditableSpan = React.memo(function (props: Props) {
+export const EditableSpan = React.memo((props: Props) => {
   let [editMode, setEditMode] = useState(false);
   let [title, setTitle] = useState(props.value);
 

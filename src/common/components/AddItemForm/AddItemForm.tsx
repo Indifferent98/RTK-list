@@ -8,7 +8,7 @@ type Props = {
   variant?: "standard" | "outlined" | "filled";
 };
 
-export const AddItemForm = React.memo(function ({ addItem, disabled = false, variant = "outlined" }: Props) {
+export const AddItemForm = React.memo(({ addItem, disabled = false, variant = "outlined" }: Props) => {
   let [title, setTitle] = useState("");
   let [error, setError] = useState<string | null>(null);
 

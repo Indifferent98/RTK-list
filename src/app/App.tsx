@@ -25,7 +25,7 @@ type Props = {
   demo?: boolean;
 };
 
-function App({ demo = false }: Props) {
+export const App = ({ demo = false }: Props) => {
   const { LogOutTC, initializeAppTC } = useActions(authThunks);
   const status = useSelector(selectStatus);
   const isInitialized = useSelector(selectIsInitialized);
@@ -90,6 +90,4 @@ function App({ demo = false }: Props) {
       </div>
     </BrowserRouter>
   );
-}
-
-export default App;
+};

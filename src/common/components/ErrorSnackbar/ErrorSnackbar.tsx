@@ -5,11 +5,11 @@ import { AlertProps, Snackbar } from "@mui/material";
 import MuiAlert from "@mui/material/Alert";
 import { selectError } from "app/appSelectors";
 
-const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(props, ref) {
-  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
-});
+const Alert = React.forwardRef<HTMLDivElement, AlertProps>((props, ref) => (
+  <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />
+));
 
-export function ErrorSnackbar() {
+export const ErrorSnackbar = () => {
   const error = useSelector(selectError);
   const dispatch = useDispatch();
 
@@ -29,4 +29,4 @@ export function ErrorSnackbar() {
       </Alert>
     </Snackbar>
   );
-}
+};

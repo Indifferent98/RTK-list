@@ -20,7 +20,7 @@ type Props = {
   demo?: boolean;
 };
 
-export const Todolist = React.memo(function ({ demo = false, ...props }: Props) {
+export const Todolist = React.memo(({ demo = false, ...props }: Props) => {
   const { removeTodolistTC, changeTodolistTitleTC } = useActions(todolistsThunks);
   const { fetchTasksTC, addTaskTC } = useActions(tasksThunks);
   const { changeTodolistFilter } = useActions(todolistsActions);
