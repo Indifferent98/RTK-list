@@ -4,6 +4,7 @@ import { Navigate } from "react-router-dom";
 import { Button, Checkbox, FormControl, FormControlLabel, FormGroup, FormLabel, Grid, TextField } from "@mui/material";
 import { selectIsLoggedIn } from "../model/authSelectors";
 import { useLogin } from "../useLogin/useLogin";
+import s from "./login.module.css";
 
 export const Login = () => {
   const isLoggedIn = useSelector(selectIsLoggedIn);
@@ -36,7 +37,7 @@ export const Login = () => {
                 error={formik.errors.email && formik.touched.email ? true : false}
                 {...formik.getFieldProps("email")}
               />
-              {formik.errors.email ? <div style={{ color: "red" }}>{formik.errors.email}</div> : null}
+              {formik.errors.email ? <div className={s.errorMessage}>{formik.errors.email}</div> : null}
               <TextField
                 error={formik.errors.password && formik.touched.password ? true : false}
                 type="password"
@@ -45,7 +46,7 @@ export const Login = () => {
                 {...formik.getFieldProps("password")}
               />
               {formik.errors.password && formik.touched.password ? (
-                <div style={{ color: "red" }}>{formik.errors.password}</div>
+                <div className={s.errorMessage}>{formik.errors.password}</div>
               ) : null}
               <FormControlLabel
                 label={"Remember me"}

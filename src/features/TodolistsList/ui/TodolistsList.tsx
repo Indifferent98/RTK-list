@@ -9,6 +9,7 @@ import { selectIsLoggedIn } from "features/Auth/model/authSelectors";
 import { AddItemForm } from "common/components/AddItemForm";
 import { useActions } from "common/hooks";
 import { selectTasks, selectTodolists } from "features/todolistsTaskSelector";
+import s from "./todolistsList.module.css";
 
 type Props = {
   demo?: boolean;
@@ -17,6 +18,10 @@ type Props = {
 export const TodolistsList: React.FC<Props> = ({ demo = false }) => {
   const { fetchTodolistsTC, addTodolistTC } = useActions(todolistsThunks);
 
+  const todolists = useSelector(selectTodolists);
+  const isLoggedIn = useSelector(selectIsLoggedIn);
+  const tasks = useSelector(selectTasks);
+
   const dispatch = useAppDispatch();
   useEffect(() => {
     if (demo || !isLoggedIn) {
@@ -24,10 +29,6 @@ export const TodolistsList: React.FC<Props> = ({ demo = false }) => {
     }
     fetchTodolistsTC();
   }, [dispatch]);
-
-  const todolists = useSelector(selectTodolists);
-  const isLoggedIn = useSelector(selectIsLoggedIn);
-  const tasks = useSelector(selectTasks);
 
   const addTodolist = useCallback(
     (title: string) => {
@@ -42,14 +43,14 @@ export const TodolistsList: React.FC<Props> = ({ demo = false }) => {
 
   return (
     <>
-      <Grid container style={{ padding: "20px" }}>
+      <Grid container className={s.grid}>
         <AddItemForm addItem={addTodolist} />
       </Grid>
       <Grid container spacing={3}>
         {todolists.map((tl) => {
           return (
             <Grid item key={tl.id}>
-              <Paper style={{ padding: "10px" }}>
+              <Paper className={s.paper}>
                 <Todolist todolist={tl} tasks={tasks[tl.id]} demo={demo} />
               </Paper>
             </Grid>

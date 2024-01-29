@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect } from "react";
-import "./App.css";
 import { TodolistsList } from "../features/TodolistsList/ui/TodolistsList";
 import { ErrorSnackbar } from "../common/components/ErrorSnackbar/ErrorSnackbar";
 import { useSelector } from "react-redux";
@@ -20,6 +19,7 @@ import { selectIsLoggedIn } from "features/Auth/model/authSelectors";
 import { authThunks } from "features/Auth/model/authSlice";
 import { Login } from "features/Auth/Login";
 import { useActions } from "common/hooks";
+import s from "./app.module.css";
 
 type Props = {
   demo?: boolean;
@@ -41,14 +41,7 @@ export const App = ({ demo = false }: Props) => {
 
   if (!isInitialized) {
     return (
-      <div
-        style={{
-          position: "fixed",
-          top: "30%",
-          textAlign: "center",
-          width: "100%",
-        }}
-      >
+      <div className={s.CircularProgress}>
         <CircularProgress />
       </div>
     );
@@ -56,38 +49,36 @@ export const App = ({ demo = false }: Props) => {
 
   return (
     <BrowserRouter>
-      <div className="App">
-        <ErrorSnackbar />
-        <AppBar style={{ border: "1px solid black", position: "relative", zIndex: 1 }} position="relative">
-          <Toolbar>
-            <IconButton edge="start" color="inherit" aria-label="menu">
-              <Menu />
-            </IconButton>
-            <Typography variant="h6">News</Typography>
-            {isLoggedIn && (
-              <Button color="inherit" onClick={logOut}>
-                Log out
-              </Button>
-            )}
-          </Toolbar>
-          {status === "loading" && <LinearProgress />}
-        </AppBar>
-        <Container fixed>
-          <Routes>
-            <Route path={"/"} element={<TodolistsList demo={demo} />} />
-            <Route path={"/login"} element={<Login />} />
-            <Route
-              path={"*"}
-              element={
-                <>
-                  <h1>404: PAGE NOT FOUND </h1>
-                  <Link to={"/"}>go to main page</Link>
-                </>
-              }
-            />
-          </Routes>
-        </Container>
-      </div>
+      <ErrorSnackbar />
+      <AppBar position="relative">
+        <Toolbar>
+          <IconButton edge="start" color="inherit" aria-label="menu">
+            <Menu />
+          </IconButton>
+          <Typography variant="h6">News</Typography>
+          {isLoggedIn && (
+            <Button color="inherit" onClick={logOut}>
+              Log out
+            </Button>
+          )}
+        </Toolbar>
+        {status === "loading" && <LinearProgress />}
+      </AppBar>
+      <Container fixed>
+        <Routes>
+          <Route path={"/"} element={<TodolistsList demo={demo} />} />
+          <Route path={"/login"} element={<Login />} />
+          <Route
+            path={"*"}
+            element={
+              <>
+                <h1>404: PAGE NOT FOUND </h1>
+                <Link to={"/"}>go to main page</Link>
+              </>
+            }
+          />
+        </Routes>
+      </Container>
     </BrowserRouter>
   );
 };
