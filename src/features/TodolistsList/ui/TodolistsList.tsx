@@ -10,6 +10,7 @@ import { AddItemForm } from "common/components/AddItemForm";
 import { useActions } from "common/hooks";
 import { selectTasks, selectTodolists } from "features/todolistsTaskSelector";
 import s from "./todolistsList.module.css";
+import { AsyncThunk, AsyncThunkAction } from "@reduxjs/toolkit";
 
 type Props = {
   demo?: boolean;
@@ -32,7 +33,7 @@ export const TodolistsList: React.FC<Props> = ({ demo = false }) => {
 
   const addTodolist = useCallback(
     (title: string) => {
-      addTodolistTC(title);
+      return addTodolistTC(title).unwrap();
     },
     [dispatch],
   );

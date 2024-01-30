@@ -1,4 +1,4 @@
-import { PayloadAction, createSlice } from "@reduxjs/toolkit";
+import { PayloadAction, UnknownAction, createSlice } from "@reduxjs/toolkit";
 
 export type RequestStatus = "idle" | "loading" | "succeeded" | "failed";
 
@@ -15,6 +15,17 @@ const slice = createSlice({
     setAppInitialized(state, action: PayloadAction<{ isInitialized: boolean }>) {
       state.isInitialized = action.payload.isInitialized;
     },
+  },
+  extraReducers: (builder) => {
+    builder.addMatcher(
+      (action: UnknownAction) => {
+        debugger;
+        return true;
+      },
+      (state, action) => {
+        debugger;
+      },
+    );
   },
 });
 

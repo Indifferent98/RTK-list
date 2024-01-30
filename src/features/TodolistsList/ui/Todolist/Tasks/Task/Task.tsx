@@ -36,12 +36,12 @@ export const Task = React.memo(({ task, todolistId }: Props) => {
   );
 
   return (
-    <>
+    <div>
       <Checkbox checked={task.status === TaskStatuses.Completed} color="primary" onChange={updateTaskStatus} />
       <EditableSpan value={task.title} onChange={changeTaskTitle} />
       <IconButton onClick={removeTask}>
         <Delete />
       </IconButton>
-    </>
+    </div>
   );
 });

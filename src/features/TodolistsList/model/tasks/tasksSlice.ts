@@ -1,11 +1,19 @@
 import { todolistsThunks } from "../todolists/todolistsSlice";
-import { ArgUpdateTask, TaskType, todolistsAPI, UpdateTaskModel } from "features/TodolistsList/api/todolistsApi";
+import {
+  ArgUpdateTask,
+  TaskType,
+  todolistsAPI,
+  TodolistType,
+  UpdateTaskModel,
+} from "features/TodolistsList/api/todolistsApi";
 import { setAppStatus } from "app/appSlice";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { createAppAsyncThunk } from "common/utils/createAppAsyncThunk";
 import { handleServerAppError, thunkTryCatch } from "common/utils";
 import { ResponseResultCode } from "common/enum";
 import { BaseResponse } from "common/types";
+import { BaseThunkAPI } from "@reduxjs/toolkit/dist/createAsyncThunk";
+import { AppRootState, AppDispatch } from "app/store";
 
 const fetchTasksTC = createAppAsyncThunk<{ tasks: TaskType[]; todolistId: string }, string>(
   "/tasks/fetchTasks",
@@ -70,22 +78,25 @@ const updateTaskTC = createAppAsyncThunk<ArgUpdateTask, ArgUpdateTask>("/task/up
   });
 });
 
-const addTaskTC = createAppAsyncThunk<{ task: TaskType }, { title: string; todolistId: string }>(
-  "/tasks/addTask",
-  async (arg, thunkAPI) => {
-    const { dispatch, rejectWithValue } = thunkAPI;
-    return thunkTryCatch(thunkAPI, async () => {
-      const res = await todolistsAPI.createTask(arg.todolistId, arg.title);
-      if (res.data.resultCode === ResponseResultCode.success) {
-        dispatch(setAppStatus({ status: "succeeded" }));
-        return { task: res.data.data.item };
-      } else {
-        handleServerAppError(res.data, dispatch);
-        return rejectWithValue(null);
-      }
-    });
-  },
-);
+const addTaskTC = createAppAsyncThunk<
+  { task: TaskType },
+  { title: string; todolistId: string },
+  {
+    rejectValue: BaseResponse<{ item: TodolistType }> | null;
+  }
+>("/tasks/addTask", async (arg, thunkAPI) => {
+  const { dispatch, rejectWithValue } = thunkAPI;
+  return thunkTryCatch(thunkAPI as BaseThunkAPI<AppRootState, unknown, AppDispatch, null>, async () => {
+    const res = await todolistsAPI.createTask(arg.todolistId, arg.title);
+    if (res.data.resultCode === ResponseResultCode.success) {
+      dispatch(setAppStatus({ status: "succeeded" }));
+      return { task: res.data.data.item };
+    } else {
+      // handleServerAppError(res.data, dispatch);
+      return rejectWithValue(res.data);
+    }
+  });
+});
 
 const slice = createSlice({
   name: "tasks",
