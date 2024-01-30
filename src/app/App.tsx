@@ -41,7 +41,7 @@ export const App = ({ demo = false }: Props) => {
 
   if (!isInitialized) {
     return (
-      <div className={s.CircularProgress}>
+      <div className={s.circularProgress}>
         <CircularProgress />
       </div>
     );
