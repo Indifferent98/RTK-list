@@ -22,7 +22,6 @@ export const AddItemForm = memo(({ addItem, disabled = false, variant = "outline
           setTitle("");
         })
         .catch((err: BaseResponse) => {
-          debugger;
           if (Array.isArray(err.messages)) {
             setError(err.messages[0]);
           }

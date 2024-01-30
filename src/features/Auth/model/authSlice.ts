@@ -60,7 +60,6 @@ const initializeAppTC = createAppAsyncThunk<{ isLoggedIn: boolean }, undefined>(
         return { isLoggedIn: true };
       } else {
         // handleServerAppError(res.data, dispatch);
-        // dispatch(setAppStatus({ status: "failed" }));
         return rejectWithValue(null);
       }
     }).finally(() => {

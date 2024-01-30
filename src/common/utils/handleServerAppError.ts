@@ -14,5 +14,4 @@ import { BaseResponse } from "common/types";
 
 export const handleServerAppError = <D>(data: BaseResponse<D>, dispatch: AppDispatch) => {
   dispatch(setAppError({ error: data.messages.length ? data.messages[0] : "Some error occurred" }));
-  dispatch(setAppStatus({ status: "failed" }));
 };
