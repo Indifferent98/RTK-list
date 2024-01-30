@@ -1,12 +1,12 @@
 import { todolistsActions } from "../../TodolistsList/model/todolists/todolistsSlice";
 import { setAppInitialized, setAppStatus } from "app/appSlice";
-import { createSlice } from "@reduxjs/toolkit";
+import { PayloadAction, UnknownAction, createSlice } from "@reduxjs/toolkit";
 import { clearTasksData } from "features/TodolistsList/model/tasks/tasksSlice";
 import { createAppAsyncThunk, handleServerAppError, thunkTryCatch } from "common/utils";
 import { authAPI, LoginParams } from "features/Auth/api/authApi";
 import { ResponseResultCode } from "common/enum";
 
-const LoginTC = createAppAsyncThunk<{ isLoggedIn: boolean }, LoginParams>("/auth/Login", async (data, thunkAPI) => {
+const LoginTC = createAppAsyncThunk<{ isLoggedIn: boolean }, LoginParams>("auth/Login", async (data, thunkAPI) => {
   const { dispatch, rejectWithValue } = thunkAPI;
 
   return thunkTryCatch(thunkAPI, async () => {
@@ -42,7 +42,7 @@ const LogOutTC = createAppAsyncThunk<{ isLoggedIn: boolean }, undefined>(
 );
 
 const initializeAppTC = createAppAsyncThunk<{ isLoggedIn: boolean }, undefined>(
-  "app/initializeAppTC",
+  "auth/initializeAppTC",
   async (_undefined, thunkAPI) => {
     const { dispatch, rejectWithValue } = thunkAPI;
     return thunkTryCatch(thunkAPI, async () => {
@@ -56,10 +56,8 @@ const initializeAppTC = createAppAsyncThunk<{ isLoggedIn: boolean }, undefined>(
             captcha: "",
           }),
         );
-        dispatch(setAppStatus({ status: "succeeded" }));
         return { isLoggedIn: true };
       } else {
-        // handleServerAppError(res.data, dispatch);
         return rejectWithValue(null);
       }
     }).finally(() => {
@@ -75,16 +73,12 @@ const slice = createSlice({
   },
   reducers: {},
   extraReducers(builder) {
-    builder
-      .addCase(LoginTC.fulfilled, (state, action) => {
+    builder.addMatcher(
+      (action: UnknownAction) => action.type.startsWith("auth") && action.type.endsWith("fulfilled"),
+      (state, action: PayloadAction<{ isLoggedIn: boolean }>) => {
         state.isLoggedIn = action.payload.isLoggedIn;
-      })
-      .addCase(LogOutTC.fulfilled, (state, action) => {
-        state.isLoggedIn = action.payload.isLoggedIn;
-      })
-      .addCase(initializeAppTC.fulfilled, (state, action) => {
-        state.isLoggedIn = action.payload.isLoggedIn;
-      });
+      },
+    );
   },
 });
 

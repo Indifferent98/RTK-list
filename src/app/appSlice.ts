@@ -19,21 +19,18 @@ const slice = createSlice({
       .addMatcher(
         (action: UnknownAction) => action.type.endsWith("/pending"),
         (state, action) => {
-          console.log("loading", action);
           state.status = "loading";
         },
       )
       .addMatcher(
         (action: UnknownAction) => action.type.endsWith("/rejected"),
         (state, action) => {
-          console.log("failed", action);
           state.status = "failed";
         },
       )
       .addMatcher(
         (action: UnknownAction) => action.type.endsWith("/fulfilled"),
         (state, action) => {
-          console.log("fulfilled", action);
           state.status = "succeeded";
         },
       );
