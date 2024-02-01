@@ -1,6 +1,6 @@
 import { todolistsActions } from "../../TodolistsList/model/todolists/todolistsSlice";
 import { setAppInitialized, setAppStatus } from "app/appSlice";
-import { PayloadAction, UnknownAction, createSlice } from "@reduxjs/toolkit";
+import { PayloadAction, UnknownAction, createSlice, isFulfilled } from "@reduxjs/toolkit";
 import { clearTasksData } from "features/TodolistsList/model/tasks/tasksSlice";
 import { createAppAsyncThunk, handleServerAppError, thunkTryCatch } from "common/utils";
 import { authAPI, LoginParams } from "features/Auth/api/authApi";

@@ -1,4 +1,5 @@
-import { PayloadAction, UnknownAction, createSlice } from "@reduxjs/toolkit";
+import { PayloadAction, UnknownAction, createSlice, isFulfilled, isPending, isRejected } from "@reduxjs/toolkit";
+import { useDispatch } from "react-redux";
 
 const slice = createSlice({
   name: "app",
@@ -16,24 +17,21 @@ const slice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addMatcher(
-        (action: UnknownAction) => action.type.endsWith("/pending"),
-        (state, action) => {
-          state.status = "loading";
-        },
-      )
-      .addMatcher(
-        (action: UnknownAction) => action.type.endsWith("/rejected"),
-        (state, action) => {
-          state.status = "failed";
-        },
-      )
-      .addMatcher(
-        (action: UnknownAction) => action.type.endsWith("/fulfilled"),
-        (state, action) => {
-          state.status = "succeeded";
-        },
-      );
+      .addMatcher(isPending, (state, action) => {
+        state.status = "loading";
+      })
+      .addMatcher(isRejected, (state, action: PayloadAction<any>) => {
+        const dispatch = useDispatch();
+        state.status = "failed";
+        dispatch(
+          setAppError({
+            error: action.payload.data.messages.length ? action.payload.data.messages[0] : "Some error occurred",
+          }),
+        );
+      })
+      .addMatcher(isFulfilled, (state, action) => {
+        state.status = "succeeded";
+      });
   },
 });
 
