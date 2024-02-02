@@ -46,7 +46,7 @@ const removeTaskTC = createAppAsyncThunk<
       return arg;
     } else {
       handleServerAppError(res.data, dispatch);
-      return rejectWithValue(null);
+      return rejectWithValue(res.data);
     }
   });
 });
@@ -68,15 +68,14 @@ const updateTaskTC = createAppAsyncThunk<ArgUpdateTask, ArgUpdateTask>("/task/up
     status: task.status,
     ...arg.model,
   };
-  return thunkTryCatch(thunkAPI, async () => {
-    const res = await todolistsAPI.updateTask(arg.todolistId, arg.taskId, apiModel);
-    if (res.data.resultCode === ResponseResultCode.success) {
-      return { model: arg.model, taskId: arg.taskId, todolistId: arg.todolistId };
-    } else {
-      handleServerAppError(res.data, dispatch);
-      return rejectWithValue(null);
-    }
-  });
+
+  const res = await todolistsAPI.updateTask(arg.todolistId, arg.taskId, apiModel);
+  if (res.data.resultCode === ResponseResultCode.success) {
+    return { model: arg.model, taskId: arg.taskId, todolistId: arg.todolistId };
+  } else {
+    handleServerAppError(res.data, dispatch);
+    return rejectWithValue(res.data);
+  }
 });
 
 const addTaskTC = createAppAsyncThunk<
@@ -93,8 +92,6 @@ const addTaskTC = createAppAsyncThunk<
       dispatch(setAppStatus({ status: "succeeded" }));
       return { task: res.data.data.item };
     } else {
-      // handleServerAppError(res.data, dispatch);
-
       return rejectWithValue(res.data);
     }
   });

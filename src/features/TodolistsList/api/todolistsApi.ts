@@ -47,6 +47,7 @@ export type TaskType = {
 } & TodolistType;
 
 export type UpdateTaskModel = Omit<TaskType, "id" | "addedDate" | "order" | "todoListId">;
+
 type GetTasksResponse = {
   error: string | null;
   totalCount: number;

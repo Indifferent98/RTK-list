@@ -1,5 +1,5 @@
-import { PayloadAction, UnknownAction, createSlice, isFulfilled, isPending, isRejected } from "@reduxjs/toolkit";
-import { useDispatch } from "react-redux";
+import { PayloadAction, createSlice, isFulfilled, isPending, isRejected } from "@reduxjs/toolkit";
+import { handleServerNetworkError } from "common/utils";
 
 const slice = createSlice({
   name: "app",
@@ -21,13 +21,17 @@ const slice = createSlice({
         state.status = "loading";
       })
       .addMatcher(isRejected, (state, action: PayloadAction<any>) => {
-        const dispatch = useDispatch();
-        state.status = "failed";
-        dispatch(
-          setAppError({
-            error: action.payload.data.messages.length ? action.payload.data.messages[0] : "Some error occurred",
-          }),
-        );
+        debugger;
+        handleServerNetworkError(action.payload.error);
+        if (action.type.includes("addTodolistTC") || action.type.includes("addTask")) {
+          state.status = "failed";
+          return;
+        }
+        return {
+          ...state,
+          status: "failed",
+          error: action.payload.messages.length ? action.payload.messages[0] : "Some error occurred",
+        };
       })
       .addMatcher(isFulfilled, (state, action) => {
         state.status = "succeeded";
