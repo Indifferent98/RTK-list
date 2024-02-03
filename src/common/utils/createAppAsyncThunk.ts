@@ -5,5 +5,5 @@ import { BaseResponse } from "common/types";
 export const createAppAsyncThunk = createAsyncThunk.withTypes<{
   state: AppRootState;
   dispatch: AppDispatch;
-  rejectValue: BaseResponse;
+  rejectValue: BaseResponse | null;
 }>();

@@ -35,7 +35,7 @@ export const AddItemForm = memo(({ addItem, disabled = false, variant = "outline
     setTitle(e.currentTarget.value);
   };
 
-  const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
+  const addItemPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
     if (error !== null) {
       setError(null);
     }
@@ -52,7 +52,7 @@ export const AddItemForm = memo(({ addItem, disabled = false, variant = "outline
         error={!!error}
         value={title}
         onChange={onChangeHandler}
-        onKeyPress={onKeyPressHandler}
+        onKeyPress={addItemPressHandler}
         label="Title"
         // helperText={error}
       />

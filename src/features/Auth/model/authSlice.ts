@@ -9,16 +9,14 @@ import { ResponseResultCode } from "common/enum";
 const LoginTC = createAppAsyncThunk<{ isLoggedIn: boolean }, LoginParams>("auth/Login", async (data, thunkAPI) => {
   const { dispatch, rejectWithValue } = thunkAPI;
 
-  return thunkTryCatch(thunkAPI, async () => {
-    const res = await authAPI.login(data);
-    if (res.data.resultCode === ResponseResultCode.success) {
-      dispatch(setAppStatus({ status: "succeeded" }));
-      return { isLoggedIn: true };
-    } else {
-      handleServerAppError(res.data, dispatch);
-      return rejectWithValue(null);
-    }
-  });
+  const res = await authAPI.login(data);
+  if (res.data.resultCode === ResponseResultCode.success) {
+    dispatch(setAppStatus({ status: "succeeded" }));
+    return { isLoggedIn: true };
+  } else {
+    handleServerAppError(res.data, dispatch);
+    return rejectWithValue(res.data);
+  }
 });
 
 const LogOutTC = createAppAsyncThunk<{ isLoggedIn: boolean }, undefined>(
@@ -26,18 +24,16 @@ const LogOutTC = createAppAsyncThunk<{ isLoggedIn: boolean }, undefined>(
   async (_undefined, thunkAPI) => {
     const { dispatch, rejectWithValue } = thunkAPI;
 
-    return thunkTryCatch(thunkAPI, async () => {
-      const res = await authAPI.logout();
-      if (res.data.resultCode === ResponseResultCode.success) {
-        dispatch(clearTasksData());
-        dispatch(todolistsActions.clearTodosData());
-        dispatch(setAppStatus({ status: "succeeded" }));
-        return { isLoggedIn: false };
-      } else {
-        handleServerAppError(res.data, dispatch);
-        return rejectWithValue(null);
-      }
-    });
+    const res = await authAPI.logout();
+    if (res.data.resultCode === ResponseResultCode.success) {
+      dispatch(clearTasksData());
+      dispatch(todolistsActions.clearTodosData());
+      dispatch(setAppStatus({ status: "succeeded" }));
+      return { isLoggedIn: false };
+    } else {
+      handleServerAppError(res.data, dispatch);
+      return rejectWithValue(res.data);
+    }
   },
 );
 
@@ -45,24 +41,23 @@ const initializeAppTC = createAppAsyncThunk<{ isLoggedIn: boolean }, undefined>(
   "auth/initializeAppTC",
   async (_undefined, thunkAPI) => {
     const { dispatch, rejectWithValue } = thunkAPI;
-    return thunkTryCatch(thunkAPI, async () => {
-      const res = await authAPI.me();
-      if (res.data.resultCode === ResponseResultCode.success) {
-        dispatch(
-          authThunks.LoginTC.fulfilled({ isLoggedIn: true }, "requriedID", {
-            email: "",
-            password: "",
-            rememberMe: false,
-            captcha: "",
-          }),
-        );
-        return { isLoggedIn: true };
-      } else {
-        return rejectWithValue(null);
-      }
-    }).finally(() => {
+
+    const res = await authAPI.me().finally(() => {
       dispatch(setAppInitialized({ isInitialized: true }));
     });
+    if (res.data.resultCode === ResponseResultCode.success) {
+      dispatch(
+        authThunks.LoginTC.fulfilled({ isLoggedIn: true }, "requriedID", {
+          email: "",
+          password: "",
+          rememberMe: false,
+          captcha: "",
+        }),
+      );
+      return { isLoggedIn: true };
+    } else {
+      return rejectWithValue(res.data);
+    }
   },
 );
 

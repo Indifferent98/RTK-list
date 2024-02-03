@@ -22,7 +22,7 @@ const slice = createSlice({
       })
       .addMatcher(isRejected, (state, action: PayloadAction<any>) => {
         debugger;
-        handleServerNetworkError(action.payload.error);
+        // handleServerNetworkError(action.payload.error);
         if (action.type.includes("addTodolistTC") || action.type.includes("addTask")) {
           state.status = "failed";
           return;
