@@ -11,11 +11,7 @@ import { useActions } from "common/hooks";
 import { selectTasks, selectTodolists } from "features/todolistsTaskSelector";
 import s from "./todolistsList.module.css";
 
-type Props = {
-  demo?: boolean;
-};
-
-export const TodolistsList: React.FC<Props> = ({ demo = false }) => {
+export const TodolistsList = () => {
   const { fetchTodolistsTC, addTodolistTC } = useActions(todolistsThunks);
 
   const todolists = useSelector(selectTodolists);
@@ -24,7 +20,7 @@ export const TodolistsList: React.FC<Props> = ({ demo = false }) => {
 
   const dispatch = useAppDispatch();
   useEffect(() => {
-    if (demo || !isLoggedIn) {
+    if (!isLoggedIn) {
       return;
     }
     fetchTodolistsTC();
@@ -51,7 +47,7 @@ export const TodolistsList: React.FC<Props> = ({ demo = false }) => {
           return (
             <Grid item key={tl.id} className={s.grid}>
               <Paper className={s.paper}>
-                <Todolist todolist={tl} tasks={tasks[tl.id]} demo={demo} />
+                <Todolist todolist={tl} tasks={tasks[tl.id]} />
               </Paper>
             </Grid>
           );

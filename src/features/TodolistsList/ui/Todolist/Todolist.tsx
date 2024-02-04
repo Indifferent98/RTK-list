@@ -11,10 +11,9 @@ import { Tasks } from "./Tasks/Tasks";
 type Props = {
   todolist: TodolistDomain;
   tasks: TaskType[];
-  demo?: boolean;
 };
 
-export const Todolist = React.memo(({ demo = false, tasks, todolist }: Props) => {
+export const Todolist = React.memo(({ tasks, todolist }: Props) => {
   const { fetchTasksTC, addTaskTC } = useActions(tasksThunks);
 
   useEffect(() => {
