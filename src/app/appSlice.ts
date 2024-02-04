@@ -1,5 +1,4 @@
-import { PayloadAction, createSlice, isFulfilled, isPending, isRejected } from "@reduxjs/toolkit";
-import { handleServerNetworkError } from "common/utils";
+import { AnyAction, PayloadAction, createSlice, isFulfilled, isPending, isRejected } from "@reduxjs/toolkit";
 
 const slice = createSlice({
   name: "app",
@@ -20,19 +19,40 @@ const slice = createSlice({
       .addMatcher(isPending, (state, action) => {
         state.status = "loading";
       })
-      .addMatcher(isRejected, (state, action: PayloadAction<any>) => {
-        debugger;
-        // handleServerNetworkError(action.payload.error);
-        if (action.type.includes("addTodolistTC") || action.type.includes("addTask")) {
-          state.status = "failed";
-          return;
+      .addMatcher(isRejected, (state, action: AnyAction) => {
+        if (
+          (action.type.includes("addTodolistTC") ||
+            action.type.includes("addTask") ||
+            action.type.includes("initializeAppTC")) &&
+          action.payload
+        ) {
+          return {
+            ...state,
+            status: "failed",
+          };
         }
+
+        let errorMessage = "Some error occurred";
+
+        if (action.payload) {
+          errorMessage = action.payload.messages.length ? action.payload.messages[0] : "Some error occurred";
+        } else {
+          if (action.error.name === "AxiosError") {
+            errorMessage = action.error.response?.data?.message || action.error?.message || errorMessage;
+          } else if (action.error instanceof Error) {
+            errorMessage = action.error.message;
+          } else {
+            errorMessage = JSON.stringify(action.error);
+          }
+        }
+
         return {
           ...state,
+          error: errorMessage,
           status: "failed",
-          error: action.payload.messages.length ? action.payload.messages[0] : "Some error occurred",
         };
       })
+
       .addMatcher(isFulfilled, (state, action) => {
         state.status = "succeeded";
       });

@@ -1,8 +1,8 @@
 import { todolistsActions } from "../../TodolistsList/model/todolists/todolistsSlice";
 import { setAppInitialized, setAppStatus } from "app/appSlice";
-import { PayloadAction, UnknownAction, createSlice, isFulfilled } from "@reduxjs/toolkit";
+import { PayloadAction, UnknownAction, createSlice } from "@reduxjs/toolkit";
 import { clearTasksData } from "features/TodolistsList/model/tasks/tasksSlice";
-import { createAppAsyncThunk, handleServerAppError, thunkTryCatch } from "common/utils";
+import { createAppAsyncThunk, handleServerAppError } from "common/utils";
 import { authAPI, LoginParams } from "features/Auth/api/authApi";
 import { ResponseResultCode } from "common/enum";
 
@@ -23,12 +23,10 @@ const LogOutTC = createAppAsyncThunk<{ isLoggedIn: boolean }, undefined>(
   "auth/LogOut",
   async (_undefined, thunkAPI) => {
     const { dispatch, rejectWithValue } = thunkAPI;
-
     const res = await authAPI.logout();
     if (res.data.resultCode === ResponseResultCode.success) {
       dispatch(clearTasksData());
       dispatch(todolistsActions.clearTodosData());
-      dispatch(setAppStatus({ status: "succeeded" }));
       return { isLoggedIn: false };
     } else {
       handleServerAppError(res.data, dispatch);
@@ -41,7 +39,6 @@ const initializeAppTC = createAppAsyncThunk<{ isLoggedIn: boolean }, undefined>(
   "auth/initializeAppTC",
   async (_undefined, thunkAPI) => {
     const { dispatch, rejectWithValue } = thunkAPI;
-
     const res = await authAPI.me().finally(() => {
       dispatch(setAppInitialized({ isInitialized: true }));
     });
