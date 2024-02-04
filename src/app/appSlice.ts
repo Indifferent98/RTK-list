@@ -26,31 +26,21 @@ const slice = createSlice({
             action.type.includes("initializeAppTC")) &&
           action.payload
         ) {
-          return {
-            ...state,
-            status: "failed",
-          };
+          return { ...state, status: "failed" };
         }
 
         let errorMessage = "Some error occurred";
 
         if (action.payload) {
           errorMessage = action.payload.messages.length ? action.payload.messages[0] : "Some error occurred";
+        } else if (action.error.name === "AxiosError") {
+          errorMessage = action.error.response?.data?.message || action.error?.message || errorMessage;
+        } else if (action.error instanceof Error) {
+          errorMessage = action.error.message;
         } else {
-          if (action.error.name === "AxiosError") {
-            errorMessage = action.error.response?.data?.message || action.error?.message || errorMessage;
-          } else if (action.error instanceof Error) {
-            errorMessage = action.error.message;
-          } else {
-            errorMessage = JSON.stringify(action.error);
-          }
+          errorMessage = JSON.stringify(action.error);
         }
-
-        return {
-          ...state,
-          error: errorMessage,
-          status: "failed",
-        };
+        return { ...state, error: errorMessage, status: "failed" };
       })
 
       .addMatcher(isFulfilled, (state, action) => {

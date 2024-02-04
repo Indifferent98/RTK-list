@@ -54,7 +54,6 @@ export const AddItemForm = memo(({ addItem, disabled = false, variant = "outline
         onChange={onChangeHandler}
         onKeyPress={addItemPressHandler}
         label="Title"
-        // helperText={error}
       />
       <IconButton color="primary" onClick={addItemHandler} disabled={disabled}>
         <AddBox />

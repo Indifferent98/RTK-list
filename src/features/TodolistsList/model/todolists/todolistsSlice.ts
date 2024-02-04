@@ -73,7 +73,6 @@ const slice = createSlice({
       if (index > -1) {
         state[index].entityStatus = action.payload.status;
       }
-      console.log(`id ${action.payload.todolistId} status: ${action.payload.status}`);
     },
     clearTodosData(state, action: PayloadAction) {
       return [];
@@ -108,7 +107,6 @@ const slice = createSlice({
       .addMatcher(
         (action: UnknownAction) => action.type.includes("removeTodolistTC") && action.type.endsWith("Rejected"),
         (state, action: PayloadAction<{ todolistId: string; status: RequestStatus }>) => {
-          debugger;
           return state.map((t) => (t.id === action.payload.todolistId ? { ...t, entityStatus: "idle" } : t));
         },
       );
