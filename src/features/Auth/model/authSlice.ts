@@ -43,14 +43,6 @@ const initializeAppTC = createAppAsyncThunk<{ isLoggedIn: boolean }, undefined>(
       dispatch(setAppInitialized({ isInitialized: true }));
     });
     if (res.data.resultCode === ResponseResultCode.success) {
-      dispatch(
-        authThunks.LoginTC.fulfilled({ isLoggedIn: true }, "requriedID", {
-          email: "",
-          password: "",
-          rememberMe: false,
-          captcha: "",
-        }),
-      );
       return { isLoggedIn: true };
     } else {
       return rejectWithValue(res.data);
